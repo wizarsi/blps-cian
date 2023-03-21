@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: cian
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=cian
+    restart: unless-stopped

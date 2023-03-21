@@ -4,7 +4,6 @@ import com.example.blpscian.model.enums.AdType;
 import com.example.blpscian.model.enums.PropertyType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 
@@ -42,4 +41,11 @@ public class Ad {
     @Column(name = "price")
     private int price;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }

@@ -13,7 +13,6 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@NoArgsConstructor
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id

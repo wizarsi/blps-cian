@@ -2,7 +2,6 @@ package com.example.blpscian.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.util.Pair;
 
 import javax.persistence.*;
 
