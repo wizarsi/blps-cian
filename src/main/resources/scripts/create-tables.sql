@@ -1,8 +1,8 @@
 create table coordinates
 (
     id        bigint primary key not null,
-    latitude  double precision   not null,
-    longitude double precision   not null
+    latitude  double precision   not null default 0,
+    longitude double precision   not null default 0
 );
 
 create table locations
@@ -18,10 +18,10 @@ create table ads
     ad_type         varchar(20)        not null,
     property_type   varchar(20)        not null,
     location_id     bigint             not null references locations (id),
-    amount_of_rooms int                not null,
-    area            double precision   not null,
-    floor           int                not null,
-    price           int                not null
+    amount_of_rooms int                not null default 0,
+    area            double precision   not null default 0,
+    floor           int                not null default 0,
+    price           int                not null default 0
 );
 
 create table metro_stations

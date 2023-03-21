@@ -2,6 +2,7 @@ package com.example.blpscian.model;
 
 import com.example.blpscian.model.enums.AdType;
 import com.example.blpscian.model.enums.PropertyType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "ads")
+@AllArgsConstructor
 @NoArgsConstructor
 public class Ad {
     @Id

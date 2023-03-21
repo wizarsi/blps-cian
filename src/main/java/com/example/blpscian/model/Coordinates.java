@@ -1,5 +1,6 @@
 package com.example.blpscian.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "coordinates")
+@AllArgsConstructor
 @NoArgsConstructor
 public class Coordinates {
     @Id
