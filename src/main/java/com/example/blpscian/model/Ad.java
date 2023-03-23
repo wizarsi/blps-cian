@@ -1,7 +1,6 @@
 package com.example.blpscian.model;
 
 import com.example.blpscian.model.enums.AdType;
-import com.example.blpscian.model.enums.PropertyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data
-@Table(name = "ads")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ad {
@@ -22,10 +21,6 @@ public class Ad {
     @Enumerated(EnumType.STRING)
     @Column(name = "ad_type")
     private AdType adType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "property_type")
-    private PropertyType propertyType;
 
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
@@ -42,12 +37,4 @@ public class Ad {
 
     @Column(name = "price")
     private int price;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
 }
