@@ -11,16 +11,18 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdCommercialDto {
+public class AdCommercialDto{
     private AdType adType;
 
     private CommercialType commercialType;
 
-    private Location location;
+    private String address;
 
     private Double area;
 
     private int floor;
 
     private int price;
+
+    private String description;
 }

@@ -1,5 +1,6 @@
 package com.example.blpscian.model;
 
+import com.example.blpscian.model.enums.AdType;
 import com.example.blpscian.model.enums.CommercialType;
 import lombok.*;
 
@@ -16,6 +17,9 @@ public class AdCommercial extends Ad {
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private Set<CommercialType> commercialTypes;
+
+    public AdCommercial(AdType adType, Location newLocation, Double area, int floor, int price, String description) {
+    }
 
     @Override
     public boolean equals(Object o) {

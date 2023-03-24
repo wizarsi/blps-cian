@@ -39,16 +39,16 @@ public class AdController {
     }
 
     @PostMapping(value = "add/ad-residential")
-    public ResponseEntity<?> addAdResidential(@RequestBody AdDto adDto) throws InvalidDataException {
+    public ResponseEntity<?> addAdResidential(@RequestBody AdResidentialDto adDto) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
-        adResidentialService.addAd(adDto);
+        adResidentialService.addResidentialAd(adDto);
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
     @PostMapping(value = "add/ad-commercial")
-    public ResponseEntity<?> addAdCommercial(@RequestBody AdDto adDto) throws InvalidDataException {
+    public ResponseEntity<?> addAdCommercial(@RequestBody AdCommercialDto adDto) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
-        adCommercialService.addAd(adDto);
+        adCommercialService.addCommercialAd(adDto);
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 }
