@@ -1,6 +1,5 @@
 package com.example.blpscian.model.dto;
 
-import com.example.blpscian.model.Location;
 import com.example.blpscian.model.enums.AdType;
 import com.example.blpscian.model.enums.LocationType;
 import lombok.AllArgsConstructor;

@@ -19,8 +19,14 @@ import java.util.Map;
 @Controller
 @RequestMapping("ad")
 public class AdController {
+    private AdService<AdResidential> adResidentialService;
+    private AdService<AdCommercial> adCommercialService;
+
     @Autowired
-    private AdService adService;
+    public AdController(AdService<AdResidential> adResidentialService, AdService<AdCommercial> adCommercialService) {
+        this.adResidentialService = adResidentialService;
+        this.adCommercialService = adCommercialService;
+    }
 
     @PostMapping(value = "search-commercial")
     public ResponseEntity<?> searchCommercial(@RequestBody AdCommercialDto) {
@@ -32,15 +38,17 @@ public class AdController {
 
     }
 
-    @GetMapping(value = "get-locations")
-    public ResponseEntity<?> getLocations() {
-
+    @PostMapping(value = "add/ad-residential")
+    public ResponseEntity<?> addAdResidential(@RequestBody AdDto adDto) throws InvalidDataException {
+        Map<Object, Object> model = new HashMap<>();
+        adResidentialService.addAd(adDto);
+        return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
-    @PostMapping(value = "add_ad")
-    public ResponseEntity<?> addAd(@RequestBody AdDto adDto) throws InvalidDataException {
+    @PostMapping(value = "add/ad-commercial")
+    public ResponseEntity<?> addAdCommercial(@RequestBody AdDto adDto) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
-        adService.addAd(adDto);
+        adCommercialService.addAd(adDto);
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 }
