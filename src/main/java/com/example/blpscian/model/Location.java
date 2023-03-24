@@ -1,5 +1,6 @@
 package com.example.blpscian.model;
 
+import com.example.blpscian.model.enums.LocationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +18,12 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "address")
-    private String address;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "location_type")
+    private LocationType locationType;//CITY
+
+    @Column(name = "name")
+    private String name; //Санкт-Петербург
 
     @ManyToOne
     @JoinColumn(name = "coordinates_id", referencedColumnName = "id")

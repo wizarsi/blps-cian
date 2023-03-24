@@ -20,8 +20,8 @@ public class AdController {
         return (ResponseEntity<?>) ResponseEntity.ok();
     }
 
-    @GetMapping(value = "get-locations")
-    public ResponseEntity<?> getLocations() {
+    @PostMapping(value = "get-locations")
+    public ResponseEntity<?> getLocations(@RequestBody AdResidentialDto adResidentialDt) {
         return (ResponseEntity<?>) ResponseEntity.ok();
     }
 }
