@@ -4,8 +4,8 @@ import com.example.blpscian.exceptions.AuthorizeException;
 import com.example.blpscian.exceptions.InvalidDataException;
 import com.example.blpscian.exceptions.NoSuchUserException;
 import com.example.blpscian.model.User;
-import com.example.blpscian.model.dto.LoginRequestDTO;
-import com.example.blpscian.model.dto.RegisterRequestDTO;
+import com.example.blpscian.model.dto.LoginRequestDto;
+import com.example.blpscian.model.dto.RegisterRequestDto;
 import com.example.blpscian.model.enums.RoleName;
 import com.example.blpscian.repositories.RoleRepository;
 import com.example.blpscian.repositories.UserRepository;
@@ -30,7 +30,7 @@ public class AuthorizationService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public User authUser(LoginRequestDTO loginRequestDTO) throws NoSuchUserException, AuthorizeException {
+    public User authUser(LoginRequestDto loginRequestDTO) throws NoSuchUserException, AuthorizeException {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()));
         if (!authentication.isAuthenticated()) {
@@ -43,7 +43,7 @@ public class AuthorizationService {
         return user;
     }
 
-    public User registerUser(RegisterRequestDTO registerRequestDTO) throws InvalidDataException {
+    public User registerUser(RegisterRequestDto registerRequestDTO) throws InvalidDataException {
         validateRegisterDTO(registerRequestDTO);
         if (userRepository.existsByEmail(registerRequestDTO.getEmail())) {
             throw new InvalidDataException("Пользователь с таким email уже существует");
@@ -58,7 +58,7 @@ public class AuthorizationService {
         return user;
     }
 
-    private void validateRegisterDTO(RegisterRequestDTO registerRequestDTO) throws InvalidDataException {
+    private void validateRegisterDTO(RegisterRequestDto registerRequestDTO) throws InvalidDataException {
         StringBuilder message = new StringBuilder();
         boolean valid = true;
         if (registerRequestDTO.getPassword() == null || registerRequestDTO.getPassword().equals("")

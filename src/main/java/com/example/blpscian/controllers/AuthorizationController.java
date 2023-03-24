@@ -3,11 +3,10 @@ package com.example.blpscian.controllers;
 import com.example.blpscian.exceptions.InvalidDataException;
 import com.example.blpscian.exceptions.NoSuchUserException;
 import com.example.blpscian.model.User;
-import com.example.blpscian.model.dto.LoginRequestDTO;
-import com.example.blpscian.model.dto.RegisterRequestDTO;
+import com.example.blpscian.model.dto.LoginRequestDto;
+import com.example.blpscian.model.dto.RegisterRequestDto;
 import com.example.blpscian.security.JwtUtil;
 import com.example.blpscian.services.AuthorizationService;
-import com.example.blpscian.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,7 @@ public class AuthorizationController {
     private AuthorizationService authorizationService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authUser(@RequestBody LoginRequestDTO loginRequestDTO) throws NoSuchUserException {
+    public ResponseEntity<?> authUser(@RequestBody LoginRequestDto loginRequestDTO) throws NoSuchUserException {
         Map<Object, Object> model = new HashMap<>();
         User authUser = authorizationService.authUser(loginRequestDTO);
         model.put("token", jwtUtil.generateToken(authUser.getEmail()));
@@ -37,7 +36,7 @@ public class AuthorizationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDTO registerRequestDTO) throws InvalidDataException {
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDto registerRequestDTO) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
         User newUser = authorizationService.registerUser(registerRequestDTO);
         model.put("token", jwtUtil.generateToken(newUser.getEmail()));
