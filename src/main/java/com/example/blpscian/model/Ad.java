@@ -40,4 +40,7 @@ public class Ad {
 
     @Column(name = "description")
     private String description;
+
+    public Ad(AdType adType, Location newLocation, int amountOfRooms, Double area, int floor, int price, String description) {
+    }
 }

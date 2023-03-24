@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AdRepository <T extends Ad> extends JpaRepository<T, Long> {
+public interface AdRepository <T extends Ad> extends JpaRepository<Ad, Long> {
 
 }

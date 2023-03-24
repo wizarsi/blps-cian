@@ -29,4 +29,9 @@ public class Location {
     @JoinColumn(name = "coordinates_id", referencedColumnName = "id")
     private Coordinates coordinates;
 
+    public Location(LocationType locationType, String name, Coordinates coordinates) {
+        this.locationType = locationType;
+        this.name = name;
+        this.coordinates = coordinates;
+    }
 }
