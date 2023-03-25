@@ -14,9 +14,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdResidential extends Ad{
-    @ElementCollection
     @Enumerated(EnumType.STRING)
-    private Set<ResidentialType> residentialTypes;
+    private ResidentialType residentialType;
 
     public AdResidential(AdType adType, Location newLocation, Double area, int floor, int price, String description) {
     }
@@ -27,11 +26,11 @@ public class AdResidential extends Ad{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         AdResidential that = (AdResidential) o;
-        return Objects.equals(residentialTypes, that.residentialTypes);
+        return residentialType == that.residentialType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), residentialTypes);
+        return Objects.hash(super.hashCode(), residentialType);
     }
 }

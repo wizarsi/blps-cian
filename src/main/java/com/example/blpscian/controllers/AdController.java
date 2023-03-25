@@ -15,10 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("ad")
+@RequestMapping("ads")
 public class AdController {
-    private AdService<AdResidential> adResidentialService;
-    private AdService<AdCommercial> adCommercialService;
+    private final AdService<AdResidential> adResidentialService;
+    private final AdService<AdCommercial> adCommercialService;
 
     @Autowired
     public AdController(AdService<AdResidential> adResidentialService, AdService<AdCommercial> adCommercialService) {
@@ -27,25 +27,25 @@ public class AdController {
     }
 
     @PostMapping(value = "search/commercial")
-    public ResponseEntity<?> searchCommercial(@RequestBody SearchCommercialAdDto searchCommercialAdDto) {
+    public ResponseEntity<?> searchCommercial(@RequestBody SearchCommercialAdDto searchCommercialAdDto) throws InvalidDataException {
         return new ResponseEntity<>(adResidentialService.searchCommercialAds(searchCommercialAdDto), HttpStatus.OK);
     }
 
     @PostMapping(value = "search/residential")
-    public ResponseEntity<?> searchResidential(@RequestBody SearchResidentialAdDto searchResidentialAdDto) {
+    public ResponseEntity<?> searchResidential(@RequestBody SearchResidentialAdDto searchResidentialAdDto) throws InvalidDataException {
         return new ResponseEntity<>(adResidentialService.searchResidentialAds(searchResidentialAdDto), HttpStatus.OK);
 
     }
 
 
-    @PostMapping(value = "add/ad-residential")
+    @PostMapping(value = "add/residential")
     public ResponseEntity<?> addAdResidential(@RequestBody AdResidentialDto adDto) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
         adResidentialService.addResidentialAd(adDto);
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
-    @PostMapping(value = "add/ad-commercial")
+    @PostMapping(value = "add/commercial")
     public ResponseEntity<?> addAdCommercial(@RequestBody AdCommercialDto adDto) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
         adCommercialService.addCommercialAd(adDto);

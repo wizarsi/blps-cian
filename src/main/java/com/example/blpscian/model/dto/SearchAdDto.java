@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 
 @Data
 @AllArgsConstructor
@@ -16,7 +14,10 @@ import java.util.Set;
 public class SearchAdDto {
     private AdType adType;
 
-    private Location location;
+    private String address;
 
-    private int price;
+    private int priceMin;
+    private int priceMax;
+
+
 }

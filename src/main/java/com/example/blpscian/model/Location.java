@@ -17,15 +17,15 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name; //Санкт-Петербург
+    @Column(name = "address")
+    private String address;
 
     @ManyToOne
     @JoinColumn(name = "coordinates_id", referencedColumnName = "id")
     private Coordinates coordinates;
 
-    public Location(String name, Coordinates coordinates) {
-        this.name = name;
+    public Location(String address, Coordinates coordinates) {
+        this.address = address;
         this.coordinates = coordinates;
     }
 }

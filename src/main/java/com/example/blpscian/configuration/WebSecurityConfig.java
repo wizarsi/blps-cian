@@ -61,15 +61,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             );
         }).and();
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/quiz").permitAll()
+                .antMatchers(HttpMethod.GET, "/ads").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/quiz/*/comments").permitAll()
-                .antMatchers(HttpMethod.GET, "/quiz/*/count").permitAll()
-                .antMatchers(HttpMethod.POST, "/quiz/*/comments").hasRole(RoleName.USER.name())
-                .antMatchers(HttpMethod.GET, "/quiz/*/question*").hasRole(RoleName.USER.name())
-                .antMatchers(HttpMethod.POST, "/quiz/*/rate").hasRole(RoleName.USER.name())
-                .antMatchers(HttpMethod.POST, "/quiz").hasRole(RoleName.USER.name())
-                .antMatchers("/admin/**").hasRole(RoleName.ADMIN.name())
+                .antMatchers(HttpMethod.GET, "/ads/search/commercial").permitAll()
+                .antMatchers(HttpMethod.GET, "/ads/search/residential").permitAll()
+                .antMatchers(HttpMethod.POST, "/ads/add/residential").hasRole(RoleName.USER.name())
+                .antMatchers(HttpMethod.GET, "/ads/add/commercial").hasRole(RoleName.USER.name())
                 .anyRequest().authenticated();
         http.headers().frameOptions().sameOrigin();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

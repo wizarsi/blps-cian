@@ -16,7 +16,8 @@ public class SearchCommercialAdDto extends SearchAdDto{
 
     private Set<CommercialType> commercialTypes;
 
-    private Double area;
+    private int areaMin;
+    private int areaMax;
 
     @Override
     public boolean equals(Object o) {
@@ -24,11 +25,11 @@ public class SearchCommercialAdDto extends SearchAdDto{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SearchCommercialAdDto that = (SearchCommercialAdDto) o;
-        return Objects.equals(commercialTypes, that.commercialTypes) && Objects.equals(area, that.area);
+        return Objects.equals(commercialTypes, that.commercialTypes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), commercialTypes, area);
+        return Objects.hash(super.hashCode(), commercialTypes);
     }
 }

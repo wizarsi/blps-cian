@@ -18,7 +18,8 @@ public class SearchResidentialAdDto extends SearchAdDto{
 
     private int amountOfRooms;
 
-    private Double area;
+    private int areaMin;
+    private int areaMax;
 
     @Override
     public boolean equals(Object o) {
@@ -26,11 +27,11 @@ public class SearchResidentialAdDto extends SearchAdDto{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SearchResidentialAdDto that = (SearchResidentialAdDto) o;
-        return amountOfRooms == that.amountOfRooms && Objects.equals(residentialTypes, that.residentialTypes) && Objects.equals(area, that.area);
+        return amountOfRooms == that.amountOfRooms && Objects.equals(residentialTypes, that.residentialTypes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), residentialTypes, amountOfRooms, area);
+        return Objects.hash(super.hashCode(), residentialTypes, amountOfRooms);
     }
 }
