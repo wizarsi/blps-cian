@@ -49,11 +49,6 @@ public class AdService<T extends Ad> {
                 adDto.getDescription(),
                 adDto.getCommercialType()
         );
-        System.out.println(adDto.getCommercialType().toString());
-        System.out.println(adDto.getPrice());
-        System.out.println(adDto.getFloor());
-        System.out.println(newAdCommercial.getPrice());
-        System.out.println(newAdCommercial.getFloor());
         adRepository.save(newAdCommercial);
     }
 

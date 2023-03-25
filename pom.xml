@@ -12,6 +12,7 @@
 	<artifactId>blps-cian</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>blps-cian</name>
+	<packaging>jar</packaging>
 	<description>blps-cian</description>
 	<properties>
 		<java.version>1.8</java.version>
