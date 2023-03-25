@@ -40,14 +40,26 @@ public class AdService<T extends Ad> {
         System.out.println("!@#: " + adDto.toString());
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
         Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
-        adRepository.save(new AdCommercial(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription()));
+        AdCommercial newAdCommercial = new AdCommercial(
+                adDto.getAdType(),
+                newLocation,
+                adDto.getArea(),
+                adDto.getFloor(),
+                adDto.getPrice(),
+                adDto.getDescription()
+        );
+        System.out.println(adDto.getCommercialType().toString());
+        System.out.println(adDto.getPrice());
+        System.out.println(adDto.getFloor());
+        System.out.println(newAdCommercial.getPrice());
+        System.out.println(newAdCommercial.getFloor());
+        adRepository.save(newAdCommercial);
     }
 
     @Transactional
     public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException {
         validateAdResidentialDto(adDto);
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
-        //Coordinates newCoordinates = coordinatesRepository.save(new Coordinates(30d, 20d));
         Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
         adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription()));
     }
@@ -64,7 +76,7 @@ public class AdService<T extends Ad> {
 
         // Получаем координаты из ответа
         String coordinates = responseBody.split("\"pos\":\"")[1].split("\"")[0];
-        System.out.println(coordinates);
+        //System.out.println(coordinates);
         Double longitude = Double.parseDouble(coordinates.split(" ")[0]);
         Double latitude = Double.parseDouble(coordinates.split(" ")[1]);
 
