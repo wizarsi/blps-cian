@@ -61,8 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             );
         }).and();
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/ads").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/swagger-ui").permitAll()
+                .antMatchers(HttpMethod.GET, "/v3/api-docs").permitAll()
                 .antMatchers(HttpMethod.POST, "/ads/search/commercial").permitAll()
                 .antMatchers(HttpMethod.POST, "/ads/search/residential").permitAll()
                 .antMatchers(HttpMethod.POST, "/ads/add/residential").hasRole(RoleName.USER.name())
