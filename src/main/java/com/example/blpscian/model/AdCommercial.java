@@ -18,8 +18,9 @@ public class AdCommercial extends Ad {
     private CommercialType commercialType;
 
 
-    public AdCommercial(AdType adType, Location location, Double area, int floor, int price, String description) {
+    public AdCommercial(AdType adType, Location location, Double area, int floor, int price, String description, CommercialType commercialType) {
         super(adType, location, area, floor, price, description);
+        this.commercialType = commercialType;
     }
 
     @Override
