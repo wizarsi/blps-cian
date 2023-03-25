@@ -1,10 +1,10 @@
 package com.example.blpscian.services;
 
 import com.example.blpscian.exceptions.InvalidDataException;
-import com.example.blpscian.model.Ad;
-import com.example.blpscian.model.Coordinates;
-import com.example.blpscian.model.Location;
-import com.example.blpscian.model.dto.*;
+import com.example.blpscian.model.*;
+import com.example.blpscian.model.dto.AdCommercialDto;
+import com.example.blpscian.model.dto.AdDto;
+import com.example.blpscian.model.dto.AdResidentialDto;
 import com.example.blpscian.repositories.AdRepository;
 import com.example.blpscian.repositories.CoordinatesRepository;
 import com.example.blpscian.repositories.LocationRepository;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,11 +36,19 @@ public class AdService<T extends Ad> {
     }
 
     @Transactional
-    public void addAd(AdDto adDto) throws InvalidDataException {
-        validateAdDTO(adDto);
+    public void addCommercialAd(AdCommercialDto adDto) throws InvalidDataException {
+        validateAdCommercialDto(adDto);
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
-        Location newLocation = locationRepository.save(new Location(adDto.getLocationType(), adDto.getAddress(), newCoordinates));
-        adRepository.save(new Ad(adDto.getAdType(), newLocation, adDto.getAmountOfRooms(), adDto.getArea(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription()));
+        Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
+        adRepository.save(new AdCommercial(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription()));
+    }
+
+    @Transactional
+    public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException {
+        validateAdResidentialDto(adDto);
+        Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
+        Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
+        adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription()));
     }
 
     private Coordinates getCoordinatesByAddress(String address) {
@@ -61,7 +68,7 @@ public class AdService<T extends Ad> {
         return new Coordinates(latitude, longitude);
     }
 
-    private void validateAdDTO(AdDto adDto) throws InvalidDataException {
+    private void validateAdCommercialDto(AdCommercialDto adDto) throws InvalidDataException {
         StringBuilder message = new StringBuilder();
         boolean valid = true;
         if (adDto.getAdType() == null) {
@@ -72,8 +79,34 @@ public class AdService<T extends Ad> {
             message.append("Адрес не может быть пустым!");
             valid = false;
         }
-        if (adDto.getLocationType() == null) {
-            message.append("Тип локации не может быть пустым!");
+        if (adDto.getArea() == null || adDto.getArea() < 0) {
+            message.append("Площадь не может быть отрицательной!");
+            valid = false;
+        }
+        if (adDto.getFloor() < 0) {
+            message.append("Номер этажа не может быть отрицательным!");
+            valid = false;
+        }
+        if (adDto.getPrice() < 0) {
+            message.append("Цена не может быть отрицательной!");
+            valid = false;
+        }
+        if (adDto.getCommercialType() == null) {
+            message.append("Тип недвижимости не может быть пустым!");
+            valid = false;
+        }
+        if (!valid) throw new InvalidDataException(message.toString());
+    }
+
+    private void validateAdResidentialDto(AdResidentialDto adDto) throws InvalidDataException {
+        StringBuilder message = new StringBuilder();
+        boolean valid = true;
+        if (adDto.getAdType() == null) {
+            message.append("Тип объявления должен быть выбран!");
+            valid = false;
+        }
+        if (adDto.getAddress() == null || adDto.getAddress().equals("")) {
+            message.append("Адрес не может быть пустым!");
             valid = false;
         }
         if (adDto.getArea() == null || adDto.getArea() < 0) {
@@ -92,14 +125,11 @@ public class AdService<T extends Ad> {
             message.append("Количество комнат не может быть отрицательным!");
             valid = false;
         }
+        if (adDto.getResidentialType() == null) {
+            message.append("Тип недвижимости не может быть пустым!");
+            valid = false;
+        }
         if (!valid) throw new InvalidDataException(message.toString());
     }
 
-    public List<AdCommercialDto> searchCommercialAds(SearchCommercialAdDto searchCommercialAdDto) {
-        return new ArrayList<AdCommercialDto>();
-    }
-
-    public List<AdResidentialDto> searchResidentialAds(SearchResidentialAdDto adResidentialDto) {
-        return new ArrayList<AdResidentialDto>();
-    }
 }

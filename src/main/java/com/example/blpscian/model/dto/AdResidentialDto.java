@@ -19,7 +19,7 @@ public class AdResidentialDto {
 
     private ResidentialType residentialType;
 
-    private Location location;
+    private String address;
 
     private int amountOfRooms;
 
@@ -28,4 +28,6 @@ public class AdResidentialDto {
     private int floor;
 
     private int price;
+
+    private String description;
 }
