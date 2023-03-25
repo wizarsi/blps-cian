@@ -3,9 +3,7 @@ package com.example.blpscian.controllers;
 import com.example.blpscian.exceptions.InvalidDataException;
 import com.example.blpscian.model.AdCommercial;
 import com.example.blpscian.model.AdResidential;
-import com.example.blpscian.model.dto.AdCommercialDto;
-import com.example.blpscian.model.dto.AdDto;
-import com.example.blpscian.model.dto.AdResidentialDto;
+import com.example.blpscian.model.dto.*;
 import com.example.blpscian.services.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,15 +26,17 @@ public class AdController {
         this.adCommercialService = adCommercialService;
     }
 
-    @PostMapping(value = "search-commercial")
-    public ResponseEntity<?> searchCommercial(@RequestBody AdCommercialDto) {
+    @PostMapping(value = "search/commercial")
+    public ResponseEntity<?> searchCommercial(@RequestBody SearchCommercialAdDto searchCommercialAdDto) {
+        return new ResponseEntity<>(adResidentialService.searchCommercialAds(searchCommercialAdDto), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "search/residential")
+    public ResponseEntity<?> searchResidential(@RequestBody SearchResidentialAdDto searchResidentialAdDto) {
+        return new ResponseEntity<>(adResidentialService.searchResidentialAds(searchResidentialAdDto), HttpStatus.OK);
 
     }
 
-    @PostMapping(value = "search-residential")
-    public ResponseEntity<?> searchResidential(@RequestBody AdResidentialDto) {
-
-    }
 
     @PostMapping(value = "add/ad-residential")
     public ResponseEntity<?> addAdResidential(@RequestBody AdResidentialDto adDto) throws InvalidDataException {

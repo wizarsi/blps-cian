@@ -2,9 +2,7 @@ package com.example.blpscian.services;
 
 import com.example.blpscian.exceptions.InvalidDataException;
 import com.example.blpscian.model.*;
-import com.example.blpscian.model.dto.AdCommercialDto;
-import com.example.blpscian.model.dto.AdDto;
-import com.example.blpscian.model.dto.AdResidentialDto;
+import com.example.blpscian.model.dto.*;
 import com.example.blpscian.repositories.AdRepository;
 import com.example.blpscian.repositories.CoordinatesRepository;
 import com.example.blpscian.repositories.LocationRepository;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -130,6 +129,14 @@ public class AdService<T extends Ad> {
             valid = false;
         }
         if (!valid) throw new InvalidDataException(message.toString());
+    }
+
+    public List<AdCommercialDto> searchCommercialAds(SearchCommercialAdDto searchCommercialAdDto) {
+        return new ArrayList<AdCommercialDto>();
+    }
+
+    public List<AdResidentialDto> searchResidentialAds(SearchResidentialAdDto adResidentialDto) {
+        return new ArrayList<AdResidentialDto>();
     }
 
 }
