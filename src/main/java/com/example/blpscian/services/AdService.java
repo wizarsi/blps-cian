@@ -141,7 +141,7 @@ public class AdService<T extends Ad> {
         return commercialAds.stream()
                 .filter(ad -> searchCommercialAdDto.getCommercialTypes().contains(ad.getCommercialType()))
                 .filter(ad -> ad.getArea() >= searchCommercialAdDto.getAreaMin() && ad.getArea() <= searchCommercialAdDto.getAreaMax())
-                .map(ad -> new AdCommercialDto(ad.getAdType(), ad.getCommercialType(), ad.getLocation().getAddress(), ad.getArea(), ad.getFloor(), ad.getPrice(), ad.getDescription()))
+                .map(ad -> new AdCommercialDto(ad.getAdType(),ad.getLocation().getAddress(), ad.getArea(), ad.getFloor(), ad.getPrice(), ad.getDescription(), ad.getCommercialType()))
                 .collect(Collectors.toList());
     }
 
@@ -152,7 +152,7 @@ public class AdService<T extends Ad> {
                 .filter(ad -> searchResidentialAdDto.getResidentialTypes().contains(ad.getResidentialType()))
                 .filter(ad -> searchResidentialAdDto.getAmountOfRooms() == ad.getAmountOfRooms())
                 .filter(ad -> ad.getArea() >= searchResidentialAdDto.getAreaMin() && ad.getArea() <= searchResidentialAdDto.getAreaMax())
-                .map(ad -> new AdResidentialDto(ad.getAdType(), ad.getResidentialType(), ad.getLocation().getAddress(), ad.getAmountOfRooms(), ad.getArea(), ad.getFloor(), ad.getPrice(), ad.getDescription()))
+                .map(ad -> new AdResidentialDto(ad.getAdType(), ad.getLocation().getAddress(), ad.getArea(), ad.getFloor(), ad.getAmountOfRooms(), ad.getDescription(), ad.getResidentialType(), ad.getPrice()))
                 .collect(Collectors.toList());
     }
 
