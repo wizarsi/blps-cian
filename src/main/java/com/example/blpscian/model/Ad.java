@@ -41,6 +41,22 @@ public class Ad {
     @Column(name = "description")
     private String description;
 
-    public Ad(AdType adType, Location newLocation, int amountOfRooms, Double area, int floor, int price, String description) {
+    public Ad(AdType adType, Location location, Double area, int floor, int price, String description) {
+        this.adType = adType;
+        this.location = location;
+        this.area = area;
+        this.floor = floor;
+        this.price = price;
+        this.description = description;
+    }
+
+    public Ad(AdType adType, Location location, Double area, int amountOfRooms,  int floor, int price, String description) {
+        this.adType = adType;
+        this.location = location;
+        this.amountOfRooms = amountOfRooms;
+        this.area = area;
+        this.floor = floor;
+        this.price = price;
+        this.description = description;
     }
 }

@@ -17,7 +17,9 @@ public class AdResidential extends Ad{
     @Enumerated(EnumType.STRING)
     private ResidentialType residentialType;
 
-    public AdResidential(AdType adType, Location newLocation, Double area, int floor, int price, String description) {
+    public AdResidential(AdType adType, Location newLocation, Double area, int amountOfRooms, int floor, int price, String description) {
+        super(adType, newLocation, area, amountOfRooms, floor, price, description);
+
     }
 
     @Override

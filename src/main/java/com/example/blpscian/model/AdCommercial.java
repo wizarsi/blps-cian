@@ -17,7 +17,9 @@ public class AdCommercial extends Ad {
     @Enumerated(EnumType.STRING)
     private CommercialType commercialType;
 
-    public AdCommercial(AdType adType, Location newLocation, Double area, int floor, int price, String description) {
+
+    public AdCommercial(AdType adType, Location location, Double area, int floor, int price, String description) {
+        super(adType, location, area, floor, price, description);
     }
 
     @Override

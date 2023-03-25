@@ -61,7 +61,7 @@ public class AdService<T extends Ad> {
         validateAdResidentialDto(adDto);
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
         Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
-        adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription()));
+        adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getAmountOfRooms(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription()));
     }
 
     private Coordinates getCoordinatesByAddress(String address) {
