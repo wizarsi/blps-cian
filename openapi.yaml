@@ -1,0 +1,286 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:9093
+    description: Generated server url
+paths:
+  /auth/register:
+    post:
+      tags:
+        - authorization-controller
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequestDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /auth/login:
+    post:
+      tags:
+        - authorization-controller
+      operationId: authUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /ads/search/residential:
+    post:
+      tags:
+        - ad-controller
+      operationId: searchResidential
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchResidentialAdDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /ads/search/commercial:
+    post:
+      tags:
+        - ad-controller
+      operationId: searchCommercial
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchCommercialAdDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /ads/add/residential:
+    post:
+      tags:
+        - ad-controller
+      operationId: addAdResidential
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdResidentialDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /ads/add/commercial:
+    post:
+      tags:
+        - ad-controller
+      operationId: addAdCommercial
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdCommercialDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    RegisterRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    LoginRequestDto:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    SearchResidentialAdDto:
+      type: object
+      properties:
+        adType:
+          type: string
+          enum:
+            - RENT
+            - SALE
+        address:
+          type: string
+        priceMin:
+          type: integer
+          format: int32
+        priceMax:
+          type: integer
+          format: int32
+        residentialTypes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+              - APARTMENT_NEW_BUILDING
+              - RESALE_APARTMENT
+              - ROOM
+              - PROPORTION
+              - HOUSE
+              - PART_OF_HOUSE
+              - TOWNHOUSE
+              - AREA
+              - GARAGE
+        amountOfRooms:
+          type: integer
+          format: int32
+        areaMin:
+          type: integer
+          format: int32
+        areaMax:
+          type: integer
+          format: int32
+    SearchCommercialAdDto:
+      type: object
+      properties:
+        adType:
+          type: string
+          enum:
+            - RENT
+            - SALE
+        address:
+          type: string
+        priceMin:
+          type: integer
+          format: int32
+        priceMax:
+          type: integer
+          format: int32
+        commercialTypes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+              - OFFICE
+              - TRADE_AREA
+              - STOREHOUSE
+              - FREE_SPACE
+              - PUBLIC_CATERING
+              - PRODUCTION
+              - CAR_SERVICE
+              - BUILDING
+              - DOMESTIC_SERVICES
+              - RENTAL_BUSINESS
+              - READY_BUSINESS
+              - COMMERCIAL_LAND
+        areaMin:
+          type: integer
+          format: int32
+        areaMax:
+          type: integer
+          format: int32
+    AdResidentialDto:
+      type: object
+      properties:
+        adType:
+          type: string
+          enum:
+            - RENT
+            - SALE
+        address:
+          type: string
+        area:
+          type: number
+          format: double
+        floor:
+          type: integer
+          format: int32
+        price:
+          type: integer
+          format: int32
+        description:
+          type: string
+        residentialType:
+          type: string
+          enum:
+            - APARTMENT_NEW_BUILDING
+            - RESALE_APARTMENT
+            - ROOM
+            - PROPORTION
+            - HOUSE
+            - PART_OF_HOUSE
+            - TOWNHOUSE
+            - AREA
+            - GARAGE
+        amountOfRooms:
+          type: integer
+          format: int32
+    AdCommercialDto:
+      type: object
+      properties:
+        adType:
+          type: string
+          enum:
+            - RENT
+            - SALE
+        address:
+          type: string
+        area:
+          type: number
+          format: double
+        floor:
+          type: integer
+          format: int32
+        price:
+          type: integer
+          format: int32
+        description:
+          type: string
+        commercialType:
+          type: string
+          enum:
+            - OFFICE
+            - TRADE_AREA
+            - STOREHOUSE
+            - FREE_SPACE
+            - PUBLIC_CATERING
+            - PRODUCTION
+            - CAR_SERVICE
+            - BUILDING
+            - DOMESTIC_SERVICES
+            - RENTAL_BUSINESS
+            - READY_BUSINESS
+            - COMMERCIAL_LAND
