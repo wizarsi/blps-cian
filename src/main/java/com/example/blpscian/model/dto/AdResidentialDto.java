@@ -18,4 +18,7 @@ public class AdResidentialDto extends AdDto {
     private ResidentialType residentialType;
 
     private int amountOfRooms;
+
+    public AdResidentialDto(AdType adType, ResidentialType residentialType, String address, int amountOfRooms, Double area, int floor, int price, String description) {
+    }
 }

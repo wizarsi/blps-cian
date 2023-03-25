@@ -13,4 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdCommercialDto extends AdDto{
     private CommercialType commercialType;
+
+    public AdCommercialDto(AdType adType, CommercialType commercialType, String address, Double area, int floor, int price, String description) {
+    }
 }

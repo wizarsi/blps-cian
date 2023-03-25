@@ -1,3 +1,6 @@
+INSERT INTO roles values (1, 'USER');
+INSERT INTO roles values (2, 'ADMIN');
+
 
 INSERT INTO coordinates values (59.940414,30.0946716);
 INSERT INTO coordinates values (,);

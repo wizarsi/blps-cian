@@ -11,6 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.JsonbHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,6 +36,8 @@ public class AdService<T extends Ad> {
     @Transactional
     public void addCommercialAd(AdCommercialDto adDto) throws InvalidDataException {
         validateAdCommercialDto(adDto);
+        System.out.println("!@#: " + adDto);
+        System.out.println("!@#: " + adDto.toString());
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
         Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
         adRepository.save(new AdCommercial(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription()));
@@ -44,6 +47,7 @@ public class AdService<T extends Ad> {
     public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException {
         validateAdResidentialDto(adDto);
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
+        //Coordinates newCoordinates = coordinatesRepository.save(new Coordinates(30d, 20d));
         Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
         adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription()));
     }
@@ -59,8 +63,10 @@ public class AdService<T extends Ad> {
         String responseBody = response.getBody();
 
         // Получаем координаты из ответа
-        Double longitude = Double.parseDouble(responseBody.split("<pos>")[1].split("</pos>")[0].split(" ")[0]);
-        Double latitude = Double.parseDouble(responseBody.split("<pos>")[1].split("</pos>")[0].split(" ")[1]);
+        String coordinates = responseBody.split("\"pos\":\"")[1].split("\"")[0];
+        System.out.println(coordinates);
+        Double longitude = Double.parseDouble(coordinates.split(" ")[0]);
+        Double latitude = Double.parseDouble(coordinates.split(" ")[1]);
 
         return new Coordinates(latitude, longitude);
     }
