@@ -13,8 +13,6 @@ public class AdDto {
 
     private String address;
 
-    private int amountOfRooms;
-
     private Double area;
 
     private int floor;

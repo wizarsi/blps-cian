@@ -14,20 +14,8 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdResidentialDto {
-    private AdType adType;
-
+public class AdResidentialDto extends AdDto {
     private ResidentialType residentialType;
 
-    private String address;
-
     private int amountOfRooms;
-
-    private Double area;
-
-    private int floor;
-
-    private int price;
-
-    private String description;
 }
