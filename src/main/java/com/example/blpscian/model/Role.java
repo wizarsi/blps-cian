@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Data
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id
