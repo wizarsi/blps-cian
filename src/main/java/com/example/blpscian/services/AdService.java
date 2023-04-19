@@ -1,11 +1,13 @@
 package com.example.blpscian.services;
 
+import com.example.blpscian.configuration.CustomUserDetails;
 import com.example.blpscian.exceptions.InvalidDataException;
 import com.example.blpscian.model.*;
 import com.example.blpscian.model.dto.*;
 import com.example.blpscian.repositories.AdRepository;
 import com.example.blpscian.repositories.CoordinatesRepository;
 import com.example.blpscian.repositories.LocationRepository;
+import com.example.blpscian.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,47 +27,44 @@ public class AdService<T extends Ad> {
     private final AdRepository<T> adRepository;
     private final CoordinatesRepository coordinatesRepository;
     private final LocationRepository locationRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public AdService(AdRepository<T> adRepository, CoordinatesRepository coordinatesRepository, LocationRepository locationRepository) {
+    public AdService(AdRepository<T> adRepository, CoordinatesRepository coordinatesRepository, LocationRepository locationRepository, UserRepository userRepository) {
         this.adRepository = adRepository;
         this.coordinatesRepository = coordinatesRepository;
         this.locationRepository = locationRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
     public void addCommercialAd(AdCommercialDto adDto) throws InvalidDataException {
         validateAdCommercialDto(adDto);
-        System.out.println("!@#: " + adDto);
-        System.out.println("!@#: " + adDto.toString());
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
         Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        AdCommercial newAdCommercial = new AdCommercial(
-                adDto.getAdType(),
-                newLocation,
-                adDto.getArea(),
-                adDto.getFloor(),
-                adDto.getPrice(),
-                adDto.getDescription(),
-                user,
-                adDto.getCommercialType()
-        );
+
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findUserByEmail(customUserDetails.getUsername());
+        AdCommercial newAdCommercial = new AdCommercial(adDto.getAdType(), newLocation, adDto.getArea(),
+                adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getCommercialType());
         adRepository.save(newAdCommercial);
     }
 
     @Transactional
     public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException {
         validateAdResidentialDto(adDto);
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
         Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
-        adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getAmountOfRooms(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getResidentialType()));
+
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findUserByEmail(customUserDetails.getUsername());
+        adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getAmountOfRooms(),
+                adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getResidentialType()));
     }
 
     private Coordinates getCoordinatesByAddress(String address) {
         final String API_KEY = "f14c7a8e-c743-4603-a23c-fdcdd4ada2cd";
-        final String GEOCODE_URL = "https://geocode-maps.yandex.ru/1.x/?apikey=" + API_KEY + "&format=json&geocode=";
+        final String GEOCODE_URL = "http://geocode-maps.yandex.ru/1.x/?apikey=" + API_KEY + "&format=json&geocode=";
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
         String url = GEOCODE_URL + address;
@@ -169,10 +168,7 @@ public class AdService<T extends Ad> {
 
     private void validateSearchResidentialAdDto(SearchResidentialAdDto searchResidentialAdDto) throws InvalidDataException {
         StringBuilder message = new StringBuilder();
-        boolean isValid = true;
-        if (checkSearchAdDto(searchResidentialAdDto, message)) {
-            isValid = false;
-        }
+        boolean isValid = !checkSearchAdDto(searchResidentialAdDto, message);
         if (searchResidentialAdDto.getAreaMin() < 0 || searchResidentialAdDto.getAreaMax() < 0) {
             isValid = false;
         }
@@ -190,10 +186,7 @@ public class AdService<T extends Ad> {
 
     private void validateSearchCommercialAdDto(SearchCommercialAdDto searchCommercialAdDto) throws InvalidDataException {
         StringBuilder message = new StringBuilder();
-        boolean isValid = true;
-        if (checkSearchAdDto(searchCommercialAdDto, message)) {
-            isValid = false;
-        }
+        boolean isValid = !checkSearchAdDto(searchCommercialAdDto, message);
         if (searchCommercialAdDto.getAreaMin() < 0 || searchCommercialAdDto.getAreaMax() < 0) {
             isValid = false;
         }
