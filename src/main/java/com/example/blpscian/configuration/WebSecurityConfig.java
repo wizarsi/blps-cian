@@ -68,8 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/ads/search/residential").permitAll()
                 .antMatchers(HttpMethod.POST, "/ads/add/residential").hasAnyRole(RoleName.USER.name(), RoleName.ADMIN.name())
                 .antMatchers(HttpMethod.POST, "/ads/add/commercial").hasAnyRole(RoleName.USER.name(), RoleName.ADMIN.name())
-                .antMatchers(HttpMethod.POST, "/ads/delete/residential").hasAnyRole(RoleName.USER.name(), RoleName.ADMIN.name())
-                .antMatchers(HttpMethod.POST, "/ads/delete/commercial").hasAnyRole(RoleName.USER.name(), RoleName.ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/ads/delete").hasRole(RoleName.ADMIN.name())
                 .anyRequest().authenticated();
         http.headers().frameOptions().sameOrigin();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

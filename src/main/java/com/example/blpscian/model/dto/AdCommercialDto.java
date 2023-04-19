@@ -1,6 +1,7 @@
 package com.example.blpscian.model.dto;
 
 import com.example.blpscian.model.Location;
+import com.example.blpscian.model.User;
 import com.example.blpscian.model.enums.AdType;
 import com.example.blpscian.model.enums.CommercialType;
 import lombok.*;
@@ -14,9 +15,10 @@ import java.util.Objects;
 public class AdCommercialDto extends AdDto{
     private CommercialType commercialType;
 
-    public AdCommercialDto(AdType adType, String address, Double area, int floor, int price, String description, CommercialType commercialType) {
-        super(adType, address, area, floor, price, description);
+    public AdCommercialDto(AdType adType, String address, Double area, int floor, int price, String description, CommercialType commercialType, String userEmail) {
+        super(adType, address, area, floor, price, description, userEmail);
         this.commercialType = commercialType;
+
     }
 
     @Override

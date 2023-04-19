@@ -1,6 +1,7 @@
 package com.example.blpscian.model.dto;
 
 import com.example.blpscian.model.Location;
+import com.example.blpscian.model.User;
 import com.example.blpscian.model.enums.AdType;
 import com.example.blpscian.model.enums.CommercialType;
 import com.example.blpscian.model.enums.ResidentialType;
@@ -17,8 +18,8 @@ public class AdResidentialDto extends AdDto {
     private ResidentialType residentialType;
     private int amountOfRooms;
 
-    public AdResidentialDto(AdType adType, String address, Double area, int floor, int price, String description, ResidentialType residentialType, int amountOfRooms) {
-        super(adType, address, area, floor, price, description);
+    public AdResidentialDto(AdType adType, String address, Double area, int floor, int price, String description, ResidentialType residentialType, int amountOfRooms, String userEmail) {
+        super(adType, address, area, floor, price, description, userEmail);
         this.residentialType = residentialType;
         this.amountOfRooms = amountOfRooms;
     }
