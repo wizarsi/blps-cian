@@ -1,7 +1,6 @@
 package com.example.blpscian.model;
 
 import com.example.blpscian.model.enums.AdType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Ad {
     @Id
@@ -41,16 +39,11 @@ public class Ad {
     @Column(name = "description")
     private String description;
 
-    public Ad(AdType adType, Location location, Double area, int floor, int price, String description) {
-        this.adType = adType;
-        this.location = location;
-        this.area = area;
-        this.floor = floor;
-        this.price = price;
-        this.description = description;
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    public Ad(AdType adType, Location location, Double area, int amountOfRooms,  int floor, int price, String description) {
+    public Ad(AdType adType, Location location, Double area, int amountOfRooms, int floor, int price, String description, User user) {
         this.adType = adType;
         this.location = location;
         this.amountOfRooms = amountOfRooms;
@@ -58,5 +51,16 @@ public class Ad {
         this.floor = floor;
         this.price = price;
         this.description = description;
+        this.user = user;
+    }
+
+    public Ad(AdType adType, Location location, Double area, int floor, int price, String description, User user) {
+        this.adType = adType;
+        this.location = location;
+        this.area = area;
+        this.floor = floor;
+        this.price = price;
+        this.description = description;
+        this.user = user;
     }
 }

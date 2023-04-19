@@ -11,7 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.JsonbHttpMessageConverter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,6 +40,7 @@ public class AdService<T extends Ad> {
         System.out.println("!@#: " + adDto.toString());
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
         Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AdCommercial newAdCommercial = new AdCommercial(
                 adDto.getAdType(),
                 newLocation,
@@ -47,6 +48,7 @@ public class AdService<T extends Ad> {
                 adDto.getFloor(),
                 adDto.getPrice(),
                 adDto.getDescription(),
+                user,
                 adDto.getCommercialType()
         );
         adRepository.save(newAdCommercial);
@@ -55,9 +57,10 @@ public class AdService<T extends Ad> {
     @Transactional
     public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException {
         validateAdResidentialDto(adDto);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
         Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
-        adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getAmountOfRooms(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), adDto.getResidentialType()));
+        adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getAmountOfRooms(), adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getResidentialType()));
     }
 
     private Coordinates getCoordinatesByAddress(String address) {
@@ -149,7 +152,7 @@ public class AdService<T extends Ad> {
         return commercialAds.stream()
                 .filter(ad -> searchCommercialAdDto.getCommercialTypes().contains(ad.getCommercialType()))
                 .filter(ad -> ad.getArea() >= searchCommercialAdDto.getAreaMin() && ad.getArea() <= searchCommercialAdDto.getAreaMax())
-                .map(ad -> new AdCommercialDto(ad.getAdType(),ad.getLocation().getAddress(), ad.getArea(), ad.getFloor(), ad.getPrice(), ad.getDescription(), ad.getCommercialType()))
+                .map(ad -> new AdCommercialDto(ad.getAdType(), ad.getLocation().getAddress(), ad.getArea(), ad.getFloor(), ad.getPrice(), ad.getDescription(), ad.getCommercialType()))
                 .collect(Collectors.toList());
     }
 

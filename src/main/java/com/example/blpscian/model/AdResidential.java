@@ -6,19 +6,19 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
+
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdResidential extends Ad{
+public class AdResidential extends Ad {
     @Enumerated(EnumType.STRING)
     private ResidentialType residentialType;
 
-    public AdResidential(AdType adType, Location newLocation, Double area, int amountOfRooms, int floor, int price, String description, ResidentialType residentialType) {
-        super(adType, newLocation, area, amountOfRooms, floor, price, description);
+    public AdResidential(AdType adType, Location newLocation, Double area, int amountOfRooms, int floor, int price, String description, User user, ResidentialType residentialType) {
+        super(adType, newLocation, area, amountOfRooms, floor, price, description, user);
         this.residentialType = residentialType;
     }
 

@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -18,8 +17,8 @@ public class AdCommercial extends Ad {
     private CommercialType commercialType;
 
 
-    public AdCommercial(AdType adType, Location location, Double area, int floor, int price, String description, CommercialType commercialType) {
-        super(adType, location, area, floor, price, description);
+    public AdCommercial(AdType adType, Location location, Double area, int floor, int price, String description, User user, CommercialType commercialType) {
+        super(adType, location, area, floor, price, description,user);
         this.commercialType = commercialType;
     }
 
