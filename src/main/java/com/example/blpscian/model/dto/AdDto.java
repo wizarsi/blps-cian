@@ -1,5 +1,6 @@
 package com.example.blpscian.model.dto;
 
+import com.example.blpscian.model.User;
 import com.example.blpscian.model.enums.AdType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,4 +21,7 @@ public class AdDto {
     private int price;
 
     private String description;
+
+    private String userEmail;
+
 }

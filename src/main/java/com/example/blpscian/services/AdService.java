@@ -38,6 +38,15 @@ public class AdService<T extends Ad> {
     }
 
     @Transactional
+    public void deleteAdsByUser(DeleteDto deleteDto) throws InvalidDataException {
+        if (!userRepository.existsByEmail(deleteDto.getEmail())) {
+            throw new InvalidDataException("Пользователя с таким email не существует!");
+        }
+        List<Ad> list = adRepository.findAllByUser(userRepository.findUserByEmail(deleteDto.getEmail()));
+        adRepository.deleteAll(list);
+    }
+
+    @Transactional
     public void addCommercialAd(AdCommercialDto adDto) throws InvalidDataException {
         validateAdCommercialDto(adDto);
         Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
@@ -151,7 +160,7 @@ public class AdService<T extends Ad> {
         return commercialAds.stream()
                 .filter(ad -> searchCommercialAdDto.getCommercialTypes().contains(ad.getCommercialType()))
                 .filter(ad -> ad.getArea() >= searchCommercialAdDto.getAreaMin() && ad.getArea() <= searchCommercialAdDto.getAreaMax())
-                .map(ad -> new AdCommercialDto(ad.getAdType(), ad.getLocation().getAddress(), ad.getArea(), ad.getFloor(), ad.getPrice(), ad.getDescription(), ad.getCommercialType()))
+                .map(ad -> new AdCommercialDto(ad.getAdType(), ad.getLocation().getAddress(), ad.getArea(), ad.getFloor(), ad.getPrice(), ad.getDescription(), ad.getCommercialType(), ad.getUser().getEmail()))
                 .collect(Collectors.toList());
     }
 
@@ -162,7 +171,7 @@ public class AdService<T extends Ad> {
                 .filter(ad -> searchResidentialAdDto.getResidentialTypes().contains(ad.getResidentialType()))
                 .filter(ad -> searchResidentialAdDto.getAmountOfRooms() == ad.getAmountOfRooms())
                 .filter(ad -> ad.getArea() >= searchResidentialAdDto.getAreaMin() && ad.getArea() <= searchResidentialAdDto.getAreaMax())
-                .map(ad -> new AdResidentialDto(ad.getAdType(), ad.getLocation().getAddress(), ad.getArea(), ad.getFloor(), ad.getAmountOfRooms(), ad.getDescription(), ad.getResidentialType(), ad.getPrice()))
+                .map(ad -> new AdResidentialDto(ad.getAdType(), ad.getLocation().getAddress(), ad.getArea(), ad.getFloor(), ad.getAmountOfRooms(), ad.getDescription(), ad.getResidentialType(), ad.getPrice(), ad.getUser().getEmail()))
                 .collect(Collectors.toList());
     }
 

@@ -34,7 +34,6 @@ public class AdController {
     @PostMapping(value = "search/residential")
     public ResponseEntity<?> searchResidential(@RequestBody SearchResidentialAdDto searchResidentialAdDto) throws InvalidDataException {
         return new ResponseEntity<>(adResidentialService.searchResidentialAds(searchResidentialAdDto), HttpStatus.OK);
-
     }
 
 
@@ -49,6 +48,13 @@ public class AdController {
     public ResponseEntity<?> addAdCommercial(@RequestBody AdCommercialDto adDto) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
         adCommercialService.addCommercialAd(adDto);
+        return new ResponseEntity<>(model, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "delete")
+    public ResponseEntity<?> deleteAdsResidentialByUserEmail(@RequestBody DeleteDto deleteDto) throws InvalidDataException {
+        Map<Object, Object> model = new HashMap<>();
+        adResidentialService.deleteAdsByUser(deleteDto);
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 }
