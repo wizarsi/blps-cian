@@ -40,15 +40,7 @@ public class AuthorizationService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()));
         User user = userRepository.findUserByEmail(loginRequestDTO.getEmail());
-        Map<String, String> model = new HashMap<>();
-        model.put("access_token", jwtUtil.generateAccessToken(user.getEmail()));
-        if (user.getRefreshToken() != null && jwtUtil.checkRefreshToken(user.getRefreshToken())) {
-            model.put("refresh_token", user.getRefreshToken());
-        } else {
-            model.put("refresh_token", jwtUtil.generateRefreshToken(user.getEmail()));
-        }
-
-        return model;
+        return generateUserRefreshAccessTokens(user);
     }
 
     public Map<String, String> registerUser(RegisterRequestDto registerRequestDTO) throws InvalidDataException {
@@ -72,6 +64,7 @@ public class AuthorizationService {
                     roleRepository.findByName(RoleName.USER)
             );
         }
+        userRepository.save(user);
         return generateUserRefreshAccessTokens(user);
     }
 
@@ -80,10 +73,8 @@ public class AuthorizationService {
         if (jwtUtil.checkRefreshToken(refreshToken)) {
             String username = jwtUtil.usernameFromRefreshToken(refreshToken);
             user = userRepository.findUserByEmail(username);
-            if (user != null && !user.getRefreshToken().equals(refreshToken))
-                throw new AuthorizeException("Refresh token отозван");
         } else {
-            throw new AuthorizeException("Refresh token неправильный, либо отозван");
+            throw new AuthorizeException("Некорректный Refresh token");
         }
         return generateUserRefreshAccessTokens(user);
     }
@@ -92,8 +83,6 @@ public class AuthorizationService {
         Map<String, String> model = new HashMap<>();
         model.put("access_token", jwtUtil.generateAccessToken(user.getEmail()));
         model.put("refresh_token", jwtUtil.generateRefreshToken(user.getEmail()));
-        user.setRefreshToken(model.get("refresh_token"));
-        userRepository.save(user);
         return model;
     }
 
