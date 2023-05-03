@@ -166,8 +166,8 @@ public class AdService<T extends Ad> {
 
     public List<AdResidentialDto> searchResidentialAds(SearchResidentialAdDto searchResidentialAdDto) throws InvalidDataException {
         validateSearchResidentialAdDto(searchResidentialAdDto);
-        ArrayList<AdResidential> commercialAds = (ArrayList<AdResidential>) adRepository.findEntitiesByAdDto(searchResidentialAdDto.getAdType(), searchResidentialAdDto.getAddress(), searchResidentialAdDto.getPriceMin(), searchResidentialAdDto.getPriceMax());
-        return commercialAds.stream()
+        ArrayList<AdResidential> residentialAds = (ArrayList<AdResidential>) adRepository.findEntitiesByAdDto(searchResidentialAdDto.getAdType(), searchResidentialAdDto.getAddress(), searchResidentialAdDto.getPriceMin(), searchResidentialAdDto.getPriceMax());
+        return residentialAds.stream()
                 .filter(ad -> searchResidentialAdDto.getResidentialTypes().contains(ad.getResidentialType()))
                 .filter(ad -> searchResidentialAdDto.getAmountOfRooms() == ad.getAmountOfRooms())
                 .filter(ad -> ad.getArea() >= searchResidentialAdDto.getAreaMin() && ad.getArea() <= searchResidentialAdDto.getAreaMax())
