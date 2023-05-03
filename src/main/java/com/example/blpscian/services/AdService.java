@@ -43,6 +43,14 @@ public class AdService<T extends Ad> {
             throw new InvalidDataException("Пользователя с таким email не существует!");
         }
         List<Ad> list = adRepository.findAllByUser(userRepository.findUserByEmail(deleteDto.getEmail()));
+        List<Location> locationList = new ArrayList<>();
+        list.forEach(l -> {
+            locationList.add(l.getLocation());
+        });
+        List<Coordinates> coordinatesList = new ArrayList<>();
+        locationList.forEach(l -> coordinatesList.add(l.getCoordinates()));
+        coordinatesRepository.deleteAll(coordinatesList);
+        locationRepository.deleteAll(locationList);
         adRepository.deleteAll(list);
     }
 

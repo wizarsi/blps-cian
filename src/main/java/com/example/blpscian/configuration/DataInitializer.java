@@ -30,7 +30,7 @@ public class DataInitializer implements ApplicationRunner {
         roleRepository.save(roleUser);
         roleRepository.save(roleAdmin);
 
-        User adminUser = new User("admin", "admin@admin.ru", passwordEncoder.encode("admin"), roleAdmin);
-        userRepository.save(adminUser);
+        //User adminUser = new User("admin", "admin@admin.ru", passwordEncoder.encode("admin"), roleAdmin);
+        //userRepository.save(adminUser);
     }
 }
