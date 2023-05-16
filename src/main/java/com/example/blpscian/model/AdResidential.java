@@ -5,6 +5,7 @@ import com.example.blpscian.model.enums.ResidentialType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -17,8 +18,8 @@ public class AdResidential extends Ad {
     @Enumerated(EnumType.STRING)
     private ResidentialType residentialType;
 
-    public AdResidential(AdType adType, Location newLocation, Double area, int amountOfRooms, int floor, int price, String description, User user, ResidentialType residentialType) {
-        super(adType, newLocation, area, amountOfRooms, floor, price, description, user);
+    public AdResidential(AdType adType, Location newLocation, Double area, int amountOfRooms, int floor, int price, String description, User user, ResidentialType residentialType, LocalDateTime publishedAt) {
+        super(adType, newLocation, area, amountOfRooms, floor, price, description, user, publishedAt);
         this.residentialType = residentialType;
     }
 

@@ -8,14 +8,13 @@ import com.example.blpscian.services.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("ads")
+@RequestMapping("/api/ads")
 public class AdController {
     private final AdService<AdResidential> adResidentialService;
     private final AdService<AdCommercial> adCommercialService;
@@ -51,10 +50,10 @@ public class AdController {
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
-    @PostMapping(value = "delete")
-    public ResponseEntity<?> deleteAdsResidentialByUserEmail(@RequestBody DeleteDto deleteDto) throws InvalidDataException {
+    @DeleteMapping(value = "delete")
+    public ResponseEntity<?> deleteAdsResidentialByUserEmail(@RequestParam String email) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
-        adResidentialService.deleteAdsByUser(deleteDto);
+        adResidentialService.deleteAdsByUser(email);
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 }

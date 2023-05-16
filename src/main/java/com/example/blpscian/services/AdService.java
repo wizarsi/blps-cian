@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class AdService<T extends Ad> {
     private final AdRepository<T> adRepository;
@@ -38,11 +38,11 @@ public class AdService<T extends Ad> {
     }
 
     @Transactional
-    public void deleteAdsByUser(DeleteDto deleteDto) throws InvalidDataException {
-        if (!userRepository.existsByEmail(deleteDto.getEmail())) {
+    public void deleteAdsByUser(String email) throws InvalidDataException {
+        if (!userRepository.existsByEmail(email)) {
             throw new InvalidDataException("Пользователя с таким email не существует!");
         }
-        List<Ad> list = adRepository.findAllByUser(userRepository.findUserByEmail(deleteDto.getEmail()));
+        List<Ad> list = adRepository.findAllByUser(userRepository.findUserByEmail(email));
         List<Location> locationList = new ArrayList<>();
         list.forEach(l -> {
             locationList.add(l.getLocation());
@@ -63,7 +63,7 @@ public class AdService<T extends Ad> {
         CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findUserByEmail(customUserDetails.getUsername());
         AdCommercial newAdCommercial = new AdCommercial(adDto.getAdType(), newLocation, adDto.getArea(),
-                adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getCommercialType());
+                adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getCommercialType(), LocalDateTime.now());
         adRepository.save(newAdCommercial);
     }
 
@@ -76,7 +76,7 @@ public class AdService<T extends Ad> {
         CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findUserByEmail(customUserDetails.getUsername());
         adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getAmountOfRooms(),
-                adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getResidentialType()));
+                adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getResidentialType(), LocalDateTime.now()));
     }
 
     private Coordinates getCoordinatesByAddress(String address) {
@@ -164,7 +164,7 @@ public class AdService<T extends Ad> {
 
     public List<AdCommercialDto> searchCommercialAds(SearchCommercialAdDto searchCommercialAdDto) throws InvalidDataException {
         validateSearchCommercialAdDto(searchCommercialAdDto);
-        ArrayList<AdCommercial> commercialAds = (ArrayList<AdCommercial>) adRepository.findEntitiesByAdDto(searchCommercialAdDto.getAdType(), searchCommercialAdDto.getAddress(), searchCommercialAdDto.getPriceMin(), searchCommercialAdDto.getPriceMax());
+        ArrayList<AdCommercial> commercialAds = (ArrayList<AdCommercial>) adRepository.findActiveAds(searchCommercialAdDto.getAdType(), searchCommercialAdDto.getAddress(), searchCommercialAdDto.getPriceMin(), searchCommercialAdDto.getPriceMax());
         return commercialAds.stream()
                 .filter(ad -> searchCommercialAdDto.getCommercialTypes().contains(ad.getCommercialType()))
                 .filter(ad -> ad.getArea() >= searchCommercialAdDto.getAreaMin() && ad.getArea() <= searchCommercialAdDto.getAreaMax())
@@ -174,7 +174,7 @@ public class AdService<T extends Ad> {
 
     public List<AdResidentialDto> searchResidentialAds(SearchResidentialAdDto searchResidentialAdDto) throws InvalidDataException {
         validateSearchResidentialAdDto(searchResidentialAdDto);
-        ArrayList<AdResidential> residentialAds = (ArrayList<AdResidential>) adRepository.findEntitiesByAdDto(searchResidentialAdDto.getAdType(), searchResidentialAdDto.getAddress(), searchResidentialAdDto.getPriceMin(), searchResidentialAdDto.getPriceMax());
+        ArrayList<AdResidential> residentialAds = (ArrayList<AdResidential>) adRepository.findActiveAds(searchResidentialAdDto.getAdType(), searchResidentialAdDto.getAddress(), searchResidentialAdDto.getPriceMin(), searchResidentialAdDto.getPriceMax());
         return residentialAds.stream()
                 .filter(ad -> searchResidentialAdDto.getResidentialTypes().contains(ad.getResidentialType()))
                 .filter(ad -> searchResidentialAdDto.getAmountOfRooms() == ad.getAmountOfRooms())

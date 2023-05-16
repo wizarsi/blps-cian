@@ -5,6 +5,7 @@ import com.example.blpscian.model.enums.CommercialType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -17,8 +18,8 @@ public class AdCommercial extends Ad {
     private CommercialType commercialType;
 
 
-    public AdCommercial(AdType adType, Location location, Double area, int floor, int price, String description, User user, CommercialType commercialType) {
-        super(adType, location, area, floor, price, description,user);
+    public AdCommercial(AdType adType, Location location, Double area, int floor, int price, String description, User user, CommercialType commercialType, LocalDateTime publishedAt) {
+        super(adType, location, area, floor, price, description,user, publishedAt);
         this.commercialType = commercialType;
     }
 
