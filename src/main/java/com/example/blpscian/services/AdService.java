@@ -38,7 +38,7 @@ public class AdService<T extends Ad> {
     }
 
     @Transactional
-    public void deleteAdsByUser(String email) throws InvalidDataException {
+    public int deleteAdsByUser(String email) throws InvalidDataException {
         if (!userRepository.existsByEmail(email)) {
             throw new InvalidDataException("Пользователя с таким email не существует!");
         }
@@ -52,6 +52,7 @@ public class AdService<T extends Ad> {
         coordinatesRepository.deleteAll(coordinatesList);
         locationRepository.deleteAll(locationList);
         adRepository.deleteAll(list);
+        return list.size();
     }
 
     @Transactional

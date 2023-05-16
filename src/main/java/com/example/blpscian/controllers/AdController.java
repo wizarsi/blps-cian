@@ -52,8 +52,7 @@ public class AdController {
 
     @DeleteMapping(value = "delete")
     public ResponseEntity<?> deleteAdsResidentialByUserEmail(@RequestParam String email) throws InvalidDataException {
-        Map<Object, Object> model = new HashMap<>();
-        adResidentialService.deleteAdsByUser(email);
-        return new ResponseEntity<>(model, HttpStatus.OK);
+        int deletedAdsCount = adResidentialService.deleteAdsByUser(email);
+        return new ResponseEntity<>(deletedAdsCount, HttpStatus.OK);
     }
 }

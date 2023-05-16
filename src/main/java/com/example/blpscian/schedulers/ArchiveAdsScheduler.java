@@ -2,6 +2,7 @@ package com.example.blpscian.schedulers;
 
 import com.example.blpscian.model.Ad;
 import com.example.blpscian.repositories.AdRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @EnableScheduling
 @Service
+@Slf4j
 public class ArchiveAdsScheduler {
     private final AdRepository<Ad> adRepository;
 
@@ -29,5 +31,12 @@ public class ArchiveAdsScheduler {
         List<Ad> expiredAds = adRepository.findByPublishedAtIsLessThanEqual(publishedAtDate);
         expiredAds.forEach(ad -> ad.setArchived(true));
         adRepository.saveAll(expiredAds);
+        StringBuilder archivedAds = new StringBuilder();
+        archivedAds.append("[");
+        expiredAds.forEach(i -> {
+            archivedAds.append("{adId: " + i.getId() + ", userId: " + i.getUser().getId() + "},");
+        });
+        archivedAds.append("]");
+        log.info("These ads was archived: " + archivedAds);
     }
 }
