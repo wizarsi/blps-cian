@@ -8,33 +8,35 @@ import com.example.blpscian.repositories.AdRepository;
 import com.example.blpscian.repositories.CoordinatesRepository;
 import com.example.blpscian.repositories.LocationRepository;
 import com.example.blpscian.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class AdService<T extends Ad> {
     private final AdRepository<T> adRepository;
     private final CoordinatesRepository coordinatesRepository;
     private final LocationRepository locationRepository;
     private final UserRepository userRepository;
+    private final KafkaProducerService kafkaProducerService;
+    private HashMap<String, String> coordinatesMap = new HashMap<>();
 
     @Autowired
-    public AdService(AdRepository<T> adRepository, CoordinatesRepository coordinatesRepository, LocationRepository locationRepository, UserRepository userRepository) {
+    public AdService(AdRepository<T> adRepository, CoordinatesRepository coordinatesRepository, LocationRepository locationRepository, UserRepository userRepository, KafkaProducerService kafkaProducerService) {
         this.adRepository = adRepository;
         this.coordinatesRepository = coordinatesRepository;
         this.locationRepository = locationRepository;
         this.userRepository = userRepository;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
     @Transactional
@@ -57,8 +59,13 @@ public class AdService<T extends Ad> {
     @Transactional
     public void addCommercialAd(AdCommercialDto adDto) throws InvalidDataException {
         validateAdCommercialDto(adDto);
-        Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
-        Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
+        Location newLocation;
+        if (locationRepository.existsByAddress(adDto.getAddress())) {
+            newLocation = locationRepository.getLocationByAddress(adDto.getAddress());
+        } else {
+            Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
+            newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
+        }
 
         CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findUserByEmail(customUserDetails.getUsername());
@@ -70,8 +77,13 @@ public class AdService<T extends Ad> {
     @Transactional
     public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException {
         validateAdResidentialDto(adDto);
-        Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
-        Location newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
+        Location newLocation;
+        if (locationRepository.existsByAddress(adDto.getAddress())) {
+            newLocation = locationRepository.getLocationByAddress(adDto.getAddress());
+        } else {
+            Coordinates newCoordinates = coordinatesRepository.save(getCoordinatesByAddress(adDto.getAddress()));
+            newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
+        }
 
         CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findUserByEmail(customUserDetails.getUsername());
@@ -80,22 +92,34 @@ public class AdService<T extends Ad> {
     }
 
     private Coordinates getCoordinatesByAddress(String address) {
-        final String API_KEY = "f14c7a8e-c743-4603-a23c-fdcdd4ada2cd";
-        final String GEOCODE_URL = "http://geocode-maps.yandex.ru/1.x/?apikey=" + API_KEY + "&format=json&geocode=";
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
-        String url = GEOCODE_URL + address;
+        kafkaProducerService.sendMessage("address", address);
+        try {
+            while (!coordinatesMap.containsKey(address)) {
+                log.info("wait...");
+                Thread.sleep(200);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String coordinates = coordinatesMap.get(address);
 
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-        String responseBody = response.getBody();
-
-        // Получаем координаты из ответа
-        String coordinates = responseBody.split("\"pos\":\"")[1].split("\"")[0];
-        //System.out.println(coordinates);
         Double longitude = Double.parseDouble(coordinates.split(" ")[0]);
         Double latitude = Double.parseDouble(coordinates.split(" ")[1]);
 
         return new Coordinates(latitude, longitude);
+    }
+
+    @KafkaListener(topics = "coordinates")
+    public void receiveCoordinates(String input) {
+        // Обработка полученного сообщения
+        log.info("Received message: " + input);
+        String address = input.split("\\|")[0];
+        String coordinates = input.split("\\|")[1];
+
+        //log.info("ad: " + address);
+        //log.info("co: " + coordinates);
+        // Ваша логика для обработки сообщения
+        coordinatesMap.put(address, coordinates);
     }
 
     private void validateAdCommercialDto(AdCommercialDto adDto) throws InvalidDataException {
