@@ -1,6 +1,7 @@
 package com.example.blpscian.controllers;
 
 import com.example.blpscian.exceptions.InvalidDataException;
+import com.example.blpscian.exceptions.TimeoutExceededException;
 import com.example.blpscian.model.AdCommercial;
 import com.example.blpscian.model.AdResidential;
 import com.example.blpscian.model.dto.*;
@@ -39,14 +40,22 @@ public class AdController {
     @PostMapping(value = "add/residential")
     public ResponseEntity<?> addAdResidential(@RequestBody AdResidentialDto adDto) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
-        adResidentialService.addResidentialAd(adDto);
+        try {
+            adResidentialService.addResidentialAd(adDto);
+        } catch (TimeoutExceededException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_GATEWAY);
+        }
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 
     @PostMapping(value = "add/commercial")
     public ResponseEntity<?> addAdCommercial(@RequestBody AdCommercialDto adDto) throws InvalidDataException {
         Map<Object, Object> model = new HashMap<>();
-        adCommercialService.addCommercialAd(adDto);
+        try {
+            adCommercialService.addCommercialAd(adDto);
+        }catch (TimeoutExceededException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_GATEWAY);
+        }
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
 

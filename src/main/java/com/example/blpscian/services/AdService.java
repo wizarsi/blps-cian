@@ -2,6 +2,7 @@ package com.example.blpscian.services;
 
 import com.example.blpscian.configuration.CustomUserDetails;
 import com.example.blpscian.exceptions.InvalidDataException;
+import com.example.blpscian.exceptions.TimeoutExceededException;
 import com.example.blpscian.model.*;
 import com.example.blpscian.model.dto.*;
 import com.example.blpscian.repositories.AdRepository;
@@ -10,7 +11,11 @@ import com.example.blpscian.repositories.LocationRepository;
 import com.example.blpscian.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Service
 @Slf4j
+@EnableRetry
 public class AdService<T extends Ad> {
     private final AdRepository<T> adRepository;
     private final CoordinatesRepository coordinatesRepository;
@@ -29,6 +35,10 @@ public class AdService<T extends Ad> {
     private final UserRepository userRepository;
     private final KafkaProducerService kafkaProducerService;
     private HashMap<String, String> coordinatesMap = new HashMap<>();
+
+    @Value("${coordinates-service-timeout}")
+    private int coordinatesServiceTmeout;
+
 
     @Autowired
     public AdService(AdRepository<T> adRepository, CoordinatesRepository coordinatesRepository, LocationRepository locationRepository, UserRepository userRepository, KafkaProducerService kafkaProducerService) {
@@ -57,9 +67,14 @@ public class AdService<T extends Ad> {
         return list.size();
     }
 
+    @Retryable(
+            value = {Exception.class},
+                maxAttempts = 3,
+            backoff = @Backoff(delay = 1000))
     @Transactional
-    public void addCommercialAd(AdCommercialDto adDto) throws InvalidDataException {
+    public void addCommercialAd(AdCommercialDto adDto) throws InvalidDataException, TimeoutExceededException {
         validateAdCommercialDto(adDto);
+        log.info("Start add commercial ad: "+adDto);
         Location newLocation;
         if (locationRepository.existsByAddress(adDto.getAddress())) {
             newLocation = locationRepository.getLocationByAddress(adDto.getAddress());
@@ -73,12 +88,19 @@ public class AdService<T extends Ad> {
         AdCommercial newAdCommercial = new AdCommercial(adDto.getAdType(), newLocation, adDto.getArea(),
                 adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getCommercialType(), LocalDateTime.now());
         adRepository.save(newAdCommercial);
+        log.info("Commercial ad was aded: "+adDto);
     }
 
+    @Retryable(
+            value = {TimeoutExceededException.class},
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 1000))
     @Transactional
-    public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException {
+    public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException, TimeoutExceededException {
         validateAdResidentialDto(adDto);
         Location newLocation;
+        log.info("Start add resedentil ad: "+adDto);
+
         if (locationRepository.existsByAddress(adDto.getAddress())) {
             newLocation = locationRepository.getLocationByAddress(adDto.getAddress());
         } else {
@@ -90,17 +112,26 @@ public class AdService<T extends Ad> {
         User user = userRepository.findUserByEmail(customUserDetails.getUsername());
         adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getAmountOfRooms(),
                 adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getResidentialType(), LocalDateTime.now()));
+        log.info("Resedential ad was aded: "+adDto);
     }
 
-    private Coordinates getCoordinatesByAddress(String address) {
+    private Coordinates getCoordinatesByAddress(String address) throws TimeoutExceededException {
+        log.info("Start getting coordinates from cooordinates-service address:" + address);
         kafkaProducerService.sendMessage("address", address);
+
+        int timeoutMs = coordinatesServiceTmeout;
         try {
             while (!coordinatesMap.containsKey(address)) {
+                if (timeoutMs==0) throw new TimeoutExceededException("Время ожидания ответа от сервиса координат превышено");
                 log.info("wait...");
                 Thread.sleep(200);
+                timeoutMs-=200;
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (TimeoutExceededException e) {
+            log.info("Ошибка при получении ответа от сервиса координат для адреса:" + address);
+            throw e;
         }
         String coordinates = coordinatesMap.get(address);
 
