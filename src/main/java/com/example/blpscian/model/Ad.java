@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -43,7 +44,13 @@ public class Ad {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public Ad(AdType adType, Location location, Double area, int amountOfRooms, int floor, int price, String description, User user) {
+    @Column(name = "published_at", nullable = false)
+    private LocalDateTime publishedAt;
+
+    @Column(name = "archived", nullable = false)
+    private Boolean archived = false;
+
+    public Ad(AdType adType, Location location, Double area, int amountOfRooms, int floor, int price, String description, User user, LocalDateTime publishedAt) {
         this.adType = adType;
         this.location = location;
         this.amountOfRooms = amountOfRooms;
@@ -52,9 +59,10 @@ public class Ad {
         this.price = price;
         this.description = description;
         this.user = user;
+        this.publishedAt = publishedAt;
     }
 
-    public Ad(AdType adType, Location location, Double area, int floor, int price, String description, User user) {
+    public Ad(AdType adType, Location location, Double area, int floor, int price, String description, User user, LocalDateTime publishedAt) {
         this.adType = adType;
         this.location = location;
         this.area = area;
@@ -62,5 +70,6 @@ public class Ad {
         this.price = price;
         this.description = description;
         this.user = user;
+        this.publishedAt = publishedAt;
     }
 }

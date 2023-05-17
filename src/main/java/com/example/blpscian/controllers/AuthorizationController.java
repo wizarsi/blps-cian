@@ -1,26 +1,17 @@
 package com.example.blpscian.controllers;
 
 import com.example.blpscian.exceptions.InvalidDataException;
-import com.example.blpscian.exceptions.NoSuchUserException;
-import com.example.blpscian.model.User;
 import com.example.blpscian.model.dto.LoginRequestDto;
 import com.example.blpscian.model.dto.RegisterRequestDto;
-import com.example.blpscian.security.JwtFilter;
-import com.example.blpscian.security.JwtUtil;
 import com.example.blpscian.services.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/api/auth")
 public class AuthorizationController {
-    @Autowired
-    private JwtUtil jwtUtil;
     @Autowired
     private AuthorizationService authorizationService;
 
