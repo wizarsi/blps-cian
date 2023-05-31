@@ -74,7 +74,7 @@ public class AdService<T extends Ad> {
     @Transactional
     public void addCommercialAd(AdCommercialDto adDto) throws InvalidDataException, TimeoutExceededException {
         validateAdCommercialDto(adDto);
-        log.info("Start add commercial ad: "+adDto);
+        log.info("Start add commercial ad: " + adDto);
         Location newLocation;
         if (locationRepository.existsByAddress(adDto.getAddress())) {
             newLocation = locationRepository.getLocationByAddress(adDto.getAddress());
@@ -88,7 +88,8 @@ public class AdService<T extends Ad> {
         AdCommercial newAdCommercial = new AdCommercial(adDto.getAdType(), newLocation, adDto.getArea(),
                 adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getCommercialType(), LocalDateTime.now());
         adRepository.save(newAdCommercial);
-        log.info("Commercial ad was aded: "+adDto);
+        kafkaProducerService.sendMessage("commercialAdAdded", user.getEmail());
+        log.info("Commercial ad was added: " + adDto);
     }
 
     @Retryable(
@@ -99,7 +100,7 @@ public class AdService<T extends Ad> {
     public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException, TimeoutExceededException {
         validateAdResidentialDto(adDto);
         Location newLocation;
-        log.info("Start add resedentil ad: "+adDto);
+        log.info("Start add residential ad: "+adDto);
 
         if (locationRepository.existsByAddress(adDto.getAddress())) {
             newLocation = locationRepository.getLocationByAddress(adDto.getAddress());
@@ -112,11 +113,12 @@ public class AdService<T extends Ad> {
         User user = userRepository.findUserByEmail(customUserDetails.getUsername());
         adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getAmountOfRooms(),
                 adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getResidentialType(), LocalDateTime.now()));
-        log.info("Resedential ad was aded: "+adDto);
+        kafkaProducerService.sendMessage("residentialAdAdded", user.getEmail());
+        log.info("Residential ad was added: " + adDto);
     }
 
     private Coordinates getCoordinatesByAddress(String address) throws TimeoutExceededException {
-        log.info("Start getting coordinates from cooordinates-service address:" + address);
+        log.info("Start getting coordinates from coordinates-service address:" + address);
         kafkaProducerService.sendMessage("address", address);
 
         int timeoutMs = coordinatesServiceTmeout;

@@ -23,7 +23,7 @@ public class CoordinatesService {
     @KafkaListener(topics = "address")
     public void receive(ConsumerRecord<String, String> consumerRecord) {
         String address = consumerRecord.value();
-        log.info("Received address in module: " + address);
+        log.info("Received address in coordinatesModule: " + address);
 
         final String API_KEY = "f14c7a8e-c743-4603-a23c-fdcdd4ada2cd";
         final String GEOCODE_URL = "http://geocode-maps.yandex.ru/1.x/?apikey=" + API_KEY + "&format=json&geocode=";
