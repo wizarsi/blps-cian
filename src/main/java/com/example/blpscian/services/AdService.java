@@ -121,13 +121,12 @@ public class AdService<T extends Ad> {
         log.info("Start getting coordinates from coordinates-service address:" + address);
         kafkaProducerService.sendMessage("address", address);
 
-        int timeoutMs = coordinatesServiceTmeout;
         try {
+            long startTime = System.currentTimeMillis();
             while (!coordinatesMap.containsKey(address)) {
-                if (timeoutMs==0) throw new TimeoutExceededException("Время ожидания ответа от сервиса координат превышено");
+                if (System.currentTimeMillis() - startTime >= coordinatesServiceTmeout) throw new TimeoutExceededException("Время ожидания ответа от сервиса координат превышено");
                 log.info("wait...");
-                Thread.sleep(200);
-                timeoutMs-=200;
+                Thread.sleep(100);
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
