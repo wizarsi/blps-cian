@@ -3,7 +3,7 @@ package com.example.blpscian.controllers;
 import com.example.blpscian.exceptions.InvalidDataException;
 import com.example.blpscian.model.dto.LoginRequestDto;
 import com.example.blpscian.model.dto.RegisterRequestDto;
-import com.example.blpscian.services.AuthorizationService;
+import com.example.blpscian.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthorizationController {
     @Autowired
-    private AuthorizationService authorizationService;
+    private AuthService authorizationService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authUser(@RequestBody LoginRequestDto loginRequestDTO) {
