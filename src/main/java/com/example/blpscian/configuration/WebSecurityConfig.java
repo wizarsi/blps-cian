@@ -54,30 +54,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
-        http.exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
-            response.sendError(
-                    HttpServletResponse.SC_UNAUTHORIZED,
-                    authException.getMessage()
-            );
-        }).and();
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/auth/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/auth/*").permitAll()
-                .antMatchers(HttpMethod.GET, "/swagger-ui").permitAll()
-                .antMatchers(HttpMethod.GET, "/v3/api-docs").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/ads/search/commercial").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/ads/search/residential").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/ads/add/residential").hasAnyRole(RoleName.USER.name(), RoleName.ADMIN.name())
-                .antMatchers(HttpMethod.POST, "/api/ads/add/commercial").hasAnyRole(RoleName.USER.name(), RoleName.ADMIN.name())
-                .antMatchers(HttpMethod.DELETE, "/api/ads/delete").hasRole(RoleName.ADMIN.name())
-                .anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
         http.headers().frameOptions().sameOrigin();
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("localhost"));
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedMethods(Collections.singletonList("*"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
