@@ -1,0 +1,166 @@
+{
+  "components": [
+    {
+      "values": [
+        {
+          "label": "Продать",
+          "value": "SALE"
+        },
+        {
+          "label": "Снять",
+          "value": "RENT"
+        }
+      ],
+      "label": "Тип объявления",
+      "type": "radio",
+      "layout": {
+        "row": "Row_1415tpj",
+        "columns": null
+      },
+      "id": "Field_0rdghpd",
+      "key": "ad_type",
+      "defaultValue": "SALE",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "values": [
+        {
+          "label": "Квартира в новостройке",
+          "value": "APARTMENT_NEW_BUILDING"
+        },
+        {
+          "label": "Вторичная квартира",
+          "value": "RESALE_APARTMENT"
+        },
+        {
+          "label": "Комната",
+          "value": "ROOM"
+        },
+        {
+          "label": "Доля",
+          "value": "PROPORTION"
+        },
+        {
+          "label": "Дом",
+          "value": "HOUSE"
+        },
+        {
+          "label": "Часть дома",
+          "value": "PART_OF_HOUSE"
+        },
+        {
+          "label": "ТаунХаус",
+          "value": "TOWNHOUSE"
+        },
+        {
+          "label": "Пространство",
+          "value": "AREA"
+        },
+        {
+          "label": "Гараж",
+          "value": "GARAGE"
+        }
+      ],
+      "label": "Тип недвижимости",
+      "type": "radio",
+      "layout": {
+        "row": "Row_1a4xuu7",
+        "columns": null
+      },
+      "id": "Field_1itvla8",
+      "key": "residential_type",
+      "defaultValue": "HOUSE",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Адрес",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0n0418z",
+        "columns": null
+      },
+      "id": "Field_0sfwi6v",
+      "key": "address",
+      "defaultValue": "Санкт-Петербург, ул. Дыбенко, 5",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Площадь",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0g07e8y",
+        "columns": null
+      },
+      "id": "Field_0lfreu2",
+      "key": "area",
+      "defaultValue": "50",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Количество комнат",
+      "type": "number",
+      "layout": {
+        "row": "Row_0g07e8y",
+        "columns": null
+      },
+      "id": "Field_0a0tsez",
+      "key": "amount_of_rooms"
+    },
+    {
+      "label": "Этаж",
+      "type": "number",
+      "layout": {
+        "row": "Row_0g07e8y",
+        "columns": null
+      },
+      "id": "Field_0zh2pmo",
+      "key": "floor",
+      "defaultValue": 1,
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Цена",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1ho97qo",
+        "columns": null
+      },
+      "id": "Field_0lyot8i",
+      "key": "price",
+      "defaultValue": "40000",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Описание",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_09j3v2g",
+        "columns": null
+      },
+      "id": "Field_0ajmtze",
+      "key": "description",
+      "defaultValue": "Офис в бизнес центре"
+    }
+  ],
+  "type": "default",
+  "id": "commercial_input",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.11.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 8
+}

@@ -83,8 +83,7 @@ public class AdService<T extends Ad> {
             newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
         }
 
-        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findUserByEmail(customUserDetails.getUsername());
+        User user = userRepository.findUserByEmail(adDto.getUserEmail());
         AdCommercial newAdCommercial = new AdCommercial(adDto.getAdType(), newLocation, adDto.getArea(),
                 adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getCommercialType(), LocalDateTime.now());
         adRepository.save(newAdCommercial);
@@ -100,7 +99,7 @@ public class AdService<T extends Ad> {
     public void addResidentialAd(AdResidentialDto adDto) throws InvalidDataException, TimeoutExceededException {
         validateAdResidentialDto(adDto);
         Location newLocation;
-        log.info("Start add residential ad: "+adDto);
+        log.info("Start add residential ad: " + adDto);
 
         if (locationRepository.existsByAddress(adDto.getAddress())) {
             newLocation = locationRepository.getLocationByAddress(adDto.getAddress());
@@ -109,8 +108,7 @@ public class AdService<T extends Ad> {
             newLocation = locationRepository.save(new Location(adDto.getAddress(), newCoordinates));
         }
 
-        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findUserByEmail(customUserDetails.getUsername());
+        User user = userRepository.findUserByEmail(adDto.getUserEmail());
         adRepository.save(new AdResidential(adDto.getAdType(), newLocation, adDto.getArea(), adDto.getAmountOfRooms(),
                 adDto.getFloor(), adDto.getPrice(), adDto.getDescription(), user, adDto.getResidentialType(), LocalDateTime.now()));
         kafkaProducerService.sendMessage("residentialAdAdded", user.getEmail());

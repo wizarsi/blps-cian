@@ -27,7 +27,7 @@ public class LoginDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) {
         try {
-            String username = (String) delegateExecution.getVariable("username");
+            String username = (String) delegateExecution.getVariable("email");
             String password = (String) delegateExecution.getVariable("password");
             Map<String, String> map = authService.authUser(new LoginRequestDto(username, password));
             String token = map.get("access_token");

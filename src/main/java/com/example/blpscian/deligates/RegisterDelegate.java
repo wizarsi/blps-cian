@@ -25,7 +25,7 @@ public class RegisterDelegate implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) {
         try {
             String name = (String) delegateExecution.getVariable("name");
-            String username = (String) delegateExecution.getVariable("username");
+            String username = (String) delegateExecution.getVariable("email");
             String password = (String) delegateExecution.getVariable("password");
             Map<String, String> map = authService.registerUser(new RegisterRequestDto(name, username, password));
             log.info("Current activity is " + delegateExecution.getCurrentActivityName());

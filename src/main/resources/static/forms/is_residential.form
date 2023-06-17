@@ -1,0 +1,26 @@
+{
+  "components": [
+    {
+      "label": "Жилая недвижимость? (нет - коммерческая)",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1i4v2g2",
+        "columns": null
+      },
+      "id": "Field_06awrym",
+      "key": "isResidential",
+      "validate": {
+        "required": false
+      }
+    }
+  ],
+  "type": "default",
+  "id": "isResidentialForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.11.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 8
+}

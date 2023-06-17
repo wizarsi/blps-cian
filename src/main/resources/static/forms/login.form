@@ -1,14 +1,14 @@
 {
   "components": [
     {
-      "label": "Username",
+      "label": "Email",
       "type": "textfield",
       "layout": {
         "row": "Row_0cm4znk",
         "columns": null
       },
       "id": "Field_186iwhv",
-      "key": "username"
+      "key": "email"
     },
     {
       "label": "Password",

@@ -11,14 +11,14 @@
       "key": "name"
     },
     {
-      "label": "Username",
+      "label": "Email",
       "type": "textfield",
       "layout": {
         "row": "Row_1cmska2",
         "columns": null
       },
       "id": "Field_1s5rwdg",
-      "key": "username"
+      "key": "email"
     },
     {
       "label": "Password",
@@ -28,7 +28,11 @@
         "columns": null
       },
       "id": "Field_0625uau",
-      "key": "password"
+      "key": "password",
+      "disabled": false,
+      "validate": {
+        "minLength": 6
+      }
     }
   ],
   "type": "default",
