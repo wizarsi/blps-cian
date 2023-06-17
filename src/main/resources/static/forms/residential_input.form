@@ -112,7 +112,8 @@
         "columns": null
       },
       "id": "Field_0a0tsez",
-      "key": "amount_of_rooms"
+      "key": "amount_of_rooms",
+      "defaultValue": 1
     },
     {
       "label": "Этаж",
@@ -151,7 +152,7 @@
       },
       "id": "Field_0ajmtze",
       "key": "description",
-      "defaultValue": "Офис в бизнес центре"
+      "defaultValue": "Шикарный дом"
     }
   ],
   "type": "default",

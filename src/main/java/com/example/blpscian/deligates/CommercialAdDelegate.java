@@ -35,14 +35,15 @@ public class CommercialAdDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         try {
-            AdType adType = (AdType) delegateExecution.getVariable("ad_type");
-            String address = (String) delegateExecution.getVariable("address");
-            Double area = (Double) delegateExecution.getVariable("area");
-            int floor = (int) delegateExecution.getVariable("floor");
-            int price = (int) delegateExecution.getVariable("price");
-            String description = (String) delegateExecution.getVariable("description");
-            CommercialType commercialType = (CommercialType) delegateExecution.getVariable("commercial_type");
-            String email = jwtUtil.usernameFromAccessToken((String) delegateExecution.getVariable("token"));
+            AdType adType = AdType.valueOf(delegateExecution.getVariable("ad_type").toString());
+            String address = delegateExecution.getVariable("address").toString();
+            Double area = Double.valueOf(delegateExecution.getVariable("area").toString());
+            int floor = Integer.parseInt(delegateExecution.getVariable("floor").toString());
+            int price = Integer.parseInt(delegateExecution.getVariable("price").toString());
+            String description = delegateExecution.getVariable("description").toString();
+            CommercialType commercialType = CommercialType.valueOf(delegateExecution.getVariable("commercial_type").toString());
+            String token = delegateExecution.getVariable("token").toString();
+            String email = jwtUtil.usernameFromAccessToken(token);
             log.info("AAAAAAAAAAAAAAAAAAAAAA " + email);
             AdCommercialDto adCommercialDto = new AdCommercialDto(
                     adType, address, area, floor, price, description, commercialType, email

@@ -8,7 +8,8 @@
         "columns": null
       },
       "id": "Field_0e6mfq0",
-      "key": "name"
+      "key": "name",
+      "defaultValue": "string"
     },
     {
       "label": "Email",
@@ -18,7 +19,8 @@
         "columns": null
       },
       "id": "Field_1s5rwdg",
-      "key": "email"
+      "key": "email",
+      "defaultValue": "maksinismile@gmail.com"
     },
     {
       "label": "Password",
@@ -32,7 +34,8 @@
       "disabled": false,
       "validate": {
         "minLength": 6
-      }
+      },
+      "defaultValue": "string"
     }
   ],
   "type": "default",

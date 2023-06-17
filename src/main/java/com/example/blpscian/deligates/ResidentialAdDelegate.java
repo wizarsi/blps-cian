@@ -31,16 +31,16 @@ public class ResidentialAdDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         try {
-            AdType adType = (AdType) delegateExecution.getVariable("ad_type");
-            String address = (String) delegateExecution.getVariable("address");
-            Double area = (Double) delegateExecution.getVariable("area");
-            int floor = (int) delegateExecution.getVariable("floor");
-            int price = (int) delegateExecution.getVariable("price");
-            String description = (String) delegateExecution.getVariable("description");
-            ResidentialType residentialType = (ResidentialType) delegateExecution.getVariable("residential_type");
-            int amountOfRooms = (int) delegateExecution.getVariable("amount_of_rooms");
-            String email = jwtUtil.usernameFromAccessToken((String) delegateExecution.getVariable("token"));
-            log.info("AAAAAAAAAAAAAAAAAAAAAA " + email);
+            AdType adType = AdType.valueOf(delegateExecution.getVariable("ad_type").toString());
+            String address = delegateExecution.getVariable("address").toString();
+            Double area = Double.valueOf(delegateExecution.getVariable("area").toString());
+            int floor = Integer.parseInt(delegateExecution.getVariable("floor").toString());
+            int price = Integer.parseInt(delegateExecution.getVariable("price").toString());
+            String description = delegateExecution.getVariable("description").toString();
+            ResidentialType residentialType = ResidentialType.valueOf(delegateExecution.getVariable("residential_type").toString());
+            int amountOfRooms = Integer.parseInt(delegateExecution.getVariable("amount_of_rooms").toString());
+            String token = delegateExecution.getVariable("token").toString();
+            String email = jwtUtil.usernameFromAccessToken(token);
             AdResidentialDto adResidentialDto = new AdResidentialDto(
                     adType, address, area, floor, price, description, residentialType, amountOfRooms, email
             );
