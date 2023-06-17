@@ -44,28 +44,20 @@ public class SearchAdsDelegate implements JavaDelegate {
         try {
             String realEstateType = delegateExecution.getVariable("realEstateType").toString();
             AdType adType = AdType.valueOf(delegateExecution.getVariable("adType").toString());
-
             String address = delegateExecution.getVariable("address").toString();
-
             int priceMin = Integer.parseInt(delegateExecution.getVariable("priceMin").toString());
-
             int priceMax = Integer.parseInt(delegateExecution.getVariable("priceMax").toString());
 
             if (realEstateType.equals("commercial")) {
                 int areaMax = Integer.parseInt(delegateExecution.getVariable("maxCommercialArea").toString());
-
                 int areaMin = Integer.parseInt(delegateExecution.getVariable("minCommercialArea").toString());
-
                 String[] checkedBoxes = gson.fromJson(delegateExecution.getVariable("premisesCommercialTypes").toString(), String[].class);
-
                 Set<CommercialType> premisesCommercialTypes = Arrays.stream(checkedBoxes)
                         .map(CommercialType::valueOf)
                         .collect(Collectors.toSet());
-
                 SearchCommercialAdDto searchCommercialAdDto = new SearchCommercialAdDto(adType, address, priceMin, priceMax, premisesCommercialTypes, areaMin, areaMax);
                 ArrayList<AdCommercialDto> commercialAds = (ArrayList<AdCommercialDto>) adCommercialService.searchCommercialAds(searchCommercialAdDto);
-                delegateExecution.setVariable("result", commercialAds);
-                log.info("Found commercial ads: " + commercialAds);
+                delegateExecution.setVariable("result", commercialAds.toString());
             } else {
                 String[] checkedBoxes = gson.fromJson(delegateExecution.getVariable("premisesResidentialTypes").toString(), String[].class);
 
@@ -90,7 +82,7 @@ public class SearchAdsDelegate implements JavaDelegate {
                     searchCommercialAdDto = new SearchResidentialAdDto(adType, address, priceMin, priceMax, premisesResidentialTypes, amountOfRooms, areaMin, areaMax);
                 }
                 ArrayList<AdResidentialDto> residentialAds = (ArrayList<AdResidentialDto>) adResidentialService.searchResidentialAds(searchCommercialAdDto);
-                delegateExecution.setVariable("result", residentialAds);
+                delegateExecution.setVariable("result", residentialAds.toString());
                 log.info("Found residential ads: " + residentialAds);
             }
             log.info("Ads were successfully found");
