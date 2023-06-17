@@ -1,6 +1,5 @@
 package com.example.blpscian.model.dto;
 
-import com.example.blpscian.model.Location;
 import com.example.blpscian.model.enums.AdType;
 import com.example.blpscian.model.enums.ResidentialType;
 import lombok.*;
@@ -20,6 +19,14 @@ public class SearchResidentialAdDto extends SearchAdDto{
 
     private int areaMin;
     private int areaMax;
+
+    public SearchResidentialAdDto(AdType adType, String address, int priceMin, int priceMax, Set<ResidentialType> residentialTypes, int amountOfRooms, int areaMin, int areaMax) {
+        super(adType, address, priceMin, priceMax);
+        this.residentialTypes = residentialTypes;
+        this.amountOfRooms = amountOfRooms;
+        this.areaMin = areaMin;
+        this.areaMax = areaMax;
+    }
 
     @Override
     public boolean equals(Object o) {

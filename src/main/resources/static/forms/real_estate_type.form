@@ -1,0 +1,34 @@
+{
+  "components": [
+    {
+      "values": [
+        {
+          "label": "Коммерческая",
+          "value": "commercial"
+        },
+        {
+          "label": "Некоммерческая",
+          "value": "residential"
+        }
+      ],
+      "label": "Тип недвижимости",
+      "type": "radio",
+      "layout": {
+        "row": "Row_05athi0",
+        "columns": null
+      },
+      "id": "Field_1xst9jh",
+      "key": "realEstateType",
+      "defaultValue": "commercial"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0r10ipm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.12.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 9
+}

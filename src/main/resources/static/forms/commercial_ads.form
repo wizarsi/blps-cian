@@ -1,0 +1,94 @@
+{
+  "components": [
+    {
+      "values": [
+        {
+          "label": "Офис",
+          "value": "OFFICE"
+        },
+        {
+          "label": "Обмен жилья",
+          "value": "TRADE_AREA"
+        },
+        {
+          "label": "Магазин",
+          "value": "STOREHOUSE"
+        },
+        {
+          "label": "Свободное пространство",
+          "value": "FREE_SPACE"
+        },
+        {
+          "label": "Общепит",
+          "value": "PUBLIC_CATERING"
+        },
+        {
+          "label": "Производство",
+          "value": "PRODUCTION"
+        },
+        {
+          "label": "Ремон авто",
+          "value": "CAR_SERVICE"
+        },
+        {
+          "label": "Здание",
+          "value": "BUILDING"
+        },
+        {
+          "label": "Внутренние услуги",
+          "value": "DOMESTIC_SERVICES"
+        },
+        {
+          "label": "Арендный бизнес",
+          "value": "RENTAL_BUSINESS"
+        },
+        {
+          "label": "Коммерческое пространство",
+          "value": "COMMERCIAL_LAND"
+        }
+      ],
+      "label": "Какого типа помещение",
+      "type": "checklist",
+      "layout": {
+        "row": "Row_0wn6nz1",
+        "columns": null
+      },
+      "id": "Field_1avag2h",
+      "key": "premisesCommercialTypes",
+      "validate": {
+        "required": false
+      }
+    },
+    {
+      "label": "Площадь min",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1q3pohx",
+        "columns": null
+      },
+      "id": "Field_0q8xlpo",
+      "key": "minCommercialArea",
+      "defaultValue": "1"
+    },
+    {
+      "label": "Площадь max",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1erftzv",
+        "columns": null
+      },
+      "id": "Field_15ha3pp",
+      "key": "maxCommercialArea",
+      "defaultValue": "100"
+    }
+  ],
+  "type": "default",
+  "id": "Form_18nkccb",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.12.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 9
+}

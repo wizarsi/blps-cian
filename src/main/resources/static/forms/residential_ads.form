@@ -1,0 +1,43 @@
+{
+  "components": [
+    {
+      "label": "Кол-во комнат",
+      "type": "number",
+      "layout": {
+        "row": "Row_1nddlu3",
+        "columns": null
+      },
+      "id": "Field_1d1kr2t",
+      "key": "amountOfRoomsResidential"
+    },
+    {
+      "label": "Площадь min",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0on1noy",
+        "columns": null
+      },
+      "id": "Field_022y3bu",
+      "key": "minResidentialArea"
+    },
+    {
+      "label": "Площадь max",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_15nfdkf",
+        "columns": null
+      },
+      "id": "Field_12zh67v",
+      "key": "maxResidentialArea"
+    }
+  ],
+  "type": "default",
+  "id": "Form_1kcq1uq",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.12.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 9
+}

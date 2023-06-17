@@ -1,6 +1,7 @@
 package com.example.blpscian.model.dto;
 
 
+import com.example.blpscian.model.enums.AdType;
 import com.example.blpscian.model.enums.CommercialType;
 import lombok.*;
 
@@ -10,7 +11,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class SearchCommercialAdDto extends SearchAdDto{
 
@@ -18,6 +18,19 @@ public class SearchCommercialAdDto extends SearchAdDto{
 
     private int areaMin;
     private int areaMax;
+
+    public SearchCommercialAdDto(AdType adType, String address, int priceMin, int priceMax, Set<CommercialType> commercialTypes, int areaMin, int areaMax) {
+        super(adType, address, priceMin, priceMax);
+        this.commercialTypes = commercialTypes;
+        this.areaMin = areaMin;
+        this.areaMax = areaMax;
+    }
+
+    public SearchCommercialAdDto(Set<CommercialType> commercialTypes, int areaMin, int areaMax) {
+        this.commercialTypes = commercialTypes;
+        this.areaMin = areaMin;
+        this.areaMax = areaMax;
+    }
 
     @Override
     public boolean equals(Object o) {

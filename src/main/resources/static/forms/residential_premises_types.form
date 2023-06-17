@@ -1,0 +1,64 @@
+{
+  "components": [
+    {
+      "values": [
+        {
+          "label": "Гараж",
+          "value": "GARAGE"
+        },
+        {
+          "label": "Вторичное жилье",
+          "value": "RESALE_APARTMENT"
+        },
+        {
+          "label": "Квартира в новом здании",
+          "value": "APARTMENT_NEW_BUILDING"
+        },
+        {
+          "label": "Комната",
+          "value": "ROOM"
+        },
+        {
+          "label": "Доля",
+          "value": "PROPORTION"
+        },
+        {
+          "label": "Дом",
+          "value": "HOUSE"
+        },
+        {
+          "label": "Часть дома",
+          "value": "PART_OF_HOUSE"
+        },
+        {
+          "label": "Танхаус",
+          "value": "TOWNHOUSE"
+        },
+        {
+          "label": "Плащадь",
+          "value": "AREA"
+        }
+      ],
+      "label": "Какого типа помещение",
+      "type": "checklist",
+      "layout": {
+        "row": "Row_0wn6nz1",
+        "columns": null
+      },
+      "id": "Field_1avag2h",
+      "key": "premisesResidentialTypes",
+      "validate": {
+        "required": false
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_18nkccb",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.12.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 9
+}
