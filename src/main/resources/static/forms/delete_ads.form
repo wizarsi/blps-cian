@@ -1,0 +1,27 @@
+{
+  "components": [
+    {
+      "label": "email",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1egyt7a",
+        "columns": null
+      },
+      "id": "Field_0l8o4u0",
+      "key": "email_to_delete",
+      "validate": {
+        "required": true
+      },
+      "defaultValue": "maksinismile@gmail.com"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0yzseve",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.11.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.19.0",
+  "schemaVersion": 8
+}

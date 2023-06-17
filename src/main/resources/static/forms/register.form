@@ -33,7 +33,7 @@
       "key": "password",
       "disabled": false,
       "validate": {
-        "minLength": 6
+        "minLength": 5
       },
       "defaultValue": "string"
     }
