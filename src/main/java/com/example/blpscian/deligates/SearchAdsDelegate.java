@@ -15,10 +15,12 @@ import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
+import com.google.gson.Gson;
 
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +40,7 @@ public class SearchAdsDelegate implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegateExecution){
+        Gson gson = new Gson();
         try {
             String realEstateType = delegateExecution.getVariable("realEstateType").toString();
             log.info("1: " + realEstateType);
@@ -61,8 +64,9 @@ public class SearchAdsDelegate implements JavaDelegate {
                 int areaMin = Integer.parseInt(delegateExecution.getVariable("minCommercialArea").toString());
                 log.info("8: " + areaMin);
 
-                String[] checkedValues = (String[]) delegateExecution.getVariable("premisesCommercialTypes");
-                Set<CommercialType> premisesCommercialTypes = Arrays.stream(checkedValues)
+                String[] checkedBoxes = gson.fromJson(delegateExecution.getVariable("premisesCommercialTypes").toString(), String[].class);
+
+                Set<CommercialType> premisesCommercialTypes = Arrays.stream(checkedBoxes)
                         .map(CommercialType::valueOf)
                         .collect(Collectors.toSet());
                 log.info("9: " + premisesCommercialTypes);
@@ -72,7 +76,11 @@ public class SearchAdsDelegate implements JavaDelegate {
                 delegateExecution.setVariable("result", commercialAds);
                 log.info("Found commercial ads: " + commercialAds);
             } else {
-                Set<ResidentialType> premisesResidentialTypes = delegateExecution.getVariableTyped("premisesResidentialTypes");
+                String[] checkedBoxes = gson.fromJson(delegateExecution.getVariable("premisesResidentialTypes").toString(), String[].class);
+
+                Set<ResidentialType> premisesResidentialTypes = Arrays.stream(checkedBoxes)
+                        .map(ResidentialType::valueOf)
+                        .collect(Collectors.toSet());
                 log.info("10: " + premisesResidentialTypes);
 
                 SearchResidentialAdDto searchCommercialAdDto;
