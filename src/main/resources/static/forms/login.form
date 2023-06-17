@@ -22,7 +22,7 @@
       "key": "password",
       "defaultValue": "string",
       "validate": {
-        "minLength": 6
+        "minLength": 5
       }
     }
   ],

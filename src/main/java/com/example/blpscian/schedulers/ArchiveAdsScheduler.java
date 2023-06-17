@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-@EnableScheduling
+//@EnableScheduling
 @Service
 @Slf4j
 public class ArchiveAdsScheduler {
@@ -24,7 +24,7 @@ public class ArchiveAdsScheduler {
         this.adRepository = adRepository;
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    //@Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void archiveAds() {
         LocalDateTime publishedAtDate = LocalDateTime.now().minus(30, ChronoUnit.DAYS);
