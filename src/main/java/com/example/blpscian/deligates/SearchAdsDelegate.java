@@ -39,37 +39,28 @@ public class SearchAdsDelegate implements JavaDelegate {
     }
 
     @Override
-    public void execute(DelegateExecution delegateExecution){
+    public void execute(DelegateExecution delegateExecution) {
         Gson gson = new Gson();
         try {
             String realEstateType = delegateExecution.getVariable("realEstateType").toString();
-            log.info("1: " + realEstateType);
-            AdType adType = AdType.valueOf( delegateExecution.getVariable("adType").toString());
-            log.info("2: " + adType);
-            log.info("3: " + delegateExecution.getVariable("adType").toString());
+            AdType adType = AdType.valueOf(delegateExecution.getVariable("adType").toString());
 
             String address = delegateExecution.getVariable("address").toString();
-            log.info("4: " + delegateExecution.getVariable("adType").toString());
 
             int priceMin = Integer.parseInt(delegateExecution.getVariable("priceMin").toString());
-            log.info("5: " + priceMin);
 
             int priceMax = Integer.parseInt(delegateExecution.getVariable("priceMax").toString());
-            log.info("6: " + priceMax);
 
             if (realEstateType.equals("commercial")) {
                 int areaMax = Integer.parseInt(delegateExecution.getVariable("maxCommercialArea").toString());
-                log.info("7: " + areaMax);
 
                 int areaMin = Integer.parseInt(delegateExecution.getVariable("minCommercialArea").toString());
-                log.info("8: " + areaMin);
 
                 String[] checkedBoxes = gson.fromJson(delegateExecution.getVariable("premisesCommercialTypes").toString(), String[].class);
 
                 Set<CommercialType> premisesCommercialTypes = Arrays.stream(checkedBoxes)
                         .map(CommercialType::valueOf)
                         .collect(Collectors.toSet());
-                log.info("9: " + premisesCommercialTypes);
 
                 SearchCommercialAdDto searchCommercialAdDto = new SearchCommercialAdDto(adType, address, priceMin, priceMax, premisesCommercialTypes, areaMin, areaMax);
                 ArrayList<AdCommercialDto> commercialAds = (ArrayList<AdCommercialDto>) adCommercialService.searchCommercialAds(searchCommercialAdDto);
@@ -81,26 +72,20 @@ public class SearchAdsDelegate implements JavaDelegate {
                 Set<ResidentialType> premisesResidentialTypes = Arrays.stream(checkedBoxes)
                         .map(ResidentialType::valueOf)
                         .collect(Collectors.toSet());
-                log.info("10: " + premisesResidentialTypes);
 
                 SearchResidentialAdDto searchCommercialAdDto;
                 if (premisesResidentialTypes.contains(ResidentialType.GARAGE)) {
                     int areaMax = Integer.parseInt(delegateExecution.getVariable("maxResidentialGarageArea").toString());
-                    log.info("11: " + areaMax);
 
                     int areaMin = Integer.parseInt(delegateExecution.getVariable("minResidentialGarageArea").toString());
-                    log.info("12: " + areaMin);
 
                     searchCommercialAdDto = new SearchResidentialAdDto(adType, address, priceMin, priceMax, premisesResidentialTypes, 1, areaMin, areaMax);
                 } else {
                     int areaMax = Integer.parseInt(delegateExecution.getVariable("maxResidentialArea").toString());
-                    log.info("13: " + areaMax);
 
                     int areaMin = Integer.parseInt(delegateExecution.getVariable("minResidentialArea").toString());
-                    log.info("14: " + areaMin);
 
                     int amountOfRooms = Integer.parseInt(delegateExecution.getVariable("amountOfRoomsResidential").toString());
-                    log.info("15: " + amountOfRooms);
 
                     searchCommercialAdDto = new SearchResidentialAdDto(adType, address, priceMin, priceMax, premisesResidentialTypes, amountOfRooms, areaMin, areaMax);
                 }
@@ -108,7 +93,7 @@ public class SearchAdsDelegate implements JavaDelegate {
                 delegateExecution.setVariable("result", residentialAds);
                 log.info("Found residential ads: " + residentialAds);
             }
-            log.info( "Ads were successfully found");
+            log.info("Ads were successfully found");
         } catch (Throwable throwable) {
             throw new BpmnError("search-ads-error", throwable.getMessage());
         }
