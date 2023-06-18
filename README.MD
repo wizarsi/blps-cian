@@ -33,6 +33,6 @@ BMPN диаграмма разработанных бизнес процессо
 Бизнесс процессы добавленные в Camunda:
 ![auth.png](bpmn/auth.png)
 ![add_ad.png](bpmn/add_ad.png)
-![search_ads.png](bpmn/search_ads.png)
+![find_ads.png](bpmn/find_ads.png)
 ![delete_ad.png](bpmn/delete_ad.png)
 ![archive_ads.png](bpmn/archive_ads.png)
